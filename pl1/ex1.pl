@@ -19,5 +19,7 @@ parent(lincoln, lj).
 parent(michael, ella).
 parent(sara, ella).
 
+% Respostas:
+
 % a) parent(X,michael). (; e 'enter' até ter todas as respostas)
 % b) parent(aldo,X). idem 
