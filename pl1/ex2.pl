@@ -35,7 +35,10 @@ gates(porto, 5).
 
 winnerTeam(F,C):-team(P,F),winner(P,C).
 
+% Respostas:
+
 % a) winner(X,porto).
 % b) winnerTeam(X,porto).
-% c) winner(X,Y),winner(X,Z). ?Como garantir que Y!=Z em todas as respostas?
-% d) 
+% c) winner(X,Y),winner(X,Z), Y\=Z.
+% d) gates(X,Y), Y>8.
+% e) plane(X,Y), Y\='edge540'.
