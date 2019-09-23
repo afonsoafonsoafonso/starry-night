@@ -1,7 +1,7 @@
-tweety.
-goldie.
-molie.
-silvester.
+%tweety.
+%goldie.
+%molie.
+%silvester.
 
 passaro(tweety).
 peixe(goldie).
