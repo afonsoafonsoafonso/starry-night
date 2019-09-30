@@ -32,6 +32,6 @@ tipo(livro(aHistoria), historia).
 
 % Respostas:
 
-% a) escreveu(autor(X), livro(osMaias)).
-% b) nacionalidade(autor(X), portuguesa), escreveu(autor(X), livro(Y)), tipo(livro(Y), romance).
-% c) escreveu(autor(X),livro(Y)), tipo(livro(Y),ficcao), escreveu(autor(X),livro(Z)), tipo(livro(Z),W), Z\=Y, W\='ficcao'.
+a:-escreveu(autor(X), livro(osMaias)).
+b:-nacionalidade(autor(X), portuguesa), escreveu(autor(X), livro(Y)), tipo(livro(Y), romance).
+c:- escreveu(autor(X),livro(Y)), tipo(livro(Y),ficcao), escreveu(autor(X),livro(Z)), tipo(livro(Z),W), Z\=Y, W\='ficcao'.
