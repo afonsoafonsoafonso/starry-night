@@ -13,3 +13,14 @@ factorial(N,F):-
     N > 1,
     N1 is N - 1, factorial(N1,F1),
     F is N * F1.
+
+% factorial com recurssividade na cauda de forma a melhorar eficiência
+fact(1,F,F).
+fact(N,F,Acc):-
+    N > 1,
+    N1 is N - 1,
+    Acc1 is Acc * N,
+    fact(N1,F,Acc1).
+
+fact2(N,F):-
+    fact(N,F,1).
