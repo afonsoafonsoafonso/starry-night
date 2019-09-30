@@ -24,3 +24,6 @@ fact(N,F,Acc):-
 
 fact2(N,F):-
     fact(N,F,1).
+
+%TO-DO:
+    % - fazer fibonacci com recursivvidade na cauda
