@@ -26,7 +26,7 @@ midBoard([
     ['B', 'B', 'B', 'B', 'B', 'B']
     ]).
 
-%example of possible board at end game
+%example of possible board at end game (player B win    )
 endBoard([
     ['A', 'A',  2, 'A', 'A', 'A'],
     [ 0 ,  0 ,  1 ,  0 ,  0 ,  2 ],
@@ -40,17 +40,20 @@ endBoard([
 
 display_startBoard:-
     startBoard(B),
-    display_game(B).
+    display_game(B,'A').
 
 display_midBoard:-
     midBoard(B),
-    display_game(B).
+    display_game(B,'B').
 
 display_endBoard:-
     endBoard(B),
-    display_game(B).
+    display_game(B, 'A').
 
-display_game(B):-
+display_game(B, P):-
+    nl,
+    write('TURN: '),
+    write(P),
     nl,
     write('     0   1   2   3   4   5 \n'),
     write('  -|---|---|---|---|---|---|'),
