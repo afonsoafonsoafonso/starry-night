@@ -4,5 +4,5 @@ myappend([X|L1], L2, [X|L3]):-
 
 % ALÍNEA A)
 before(A, B, L):-
-    append(_,[A|L1],L),  
-    append(_,[B|_],L1).
+    myappend(_,[A|L1],L),  
+    myappend(_,[B|_],L1).
