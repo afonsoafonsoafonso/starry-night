@@ -96,8 +96,6 @@ display_cell(3):-
 
 % TO-DO:
 %   - display tabuleiro + flexível
-%   - substituir A e B por -1 e -2
-%   - predicados para dar display às casas
 
     
 
