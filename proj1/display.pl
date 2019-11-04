@@ -1,19 +1,6 @@
 % Avaliação Intercalar PLOG
 % Game: Xero-G
 % by Afonso Mendonça & Filipe Nogueira
-
-% example of possible board at game start
-startBoard([
-    [-1 , -1 , -1 , -1 , -1 , -1 ],
-    [ 3 ,  2 ,  1 ,  3 ,  1 ,  2 ],
-    [ 0 ,  0 ,  0 ,  0 ,  0 ,  0 ],
-    [ 0 ,  0 ,  0 ,  0 ,  0 ,  0 ],
-    [ 0 ,  0 ,  0 ,  0 ,  0 ,  0 ],
-    [ 0 ,  0 ,  0 ,  0 ,  0 ,  0 ],
-    [ 1 ,  3 ,  2 ,  2 ,  3 ,  1 ],
-    [-2 , -2 , -2 , -2 , -2 , -2 ]
-    ]).
-
 % example of possible board at mid game
 midBoard([
     [-1 , -1 , -1 , -1 , -1 , -1 ],
