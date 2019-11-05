@@ -13,7 +13,7 @@ board_setup(B, P):-
     startBoard(B),
     P is 1.
 
-start_game():-
+start_game:-
     board_setup(B, P),
     game_loop(B, P).
 
@@ -22,18 +22,10 @@ game_loop(B, P):-
     % TO-DO: verificar se há vencedor
     % pede por um move do user
     get_move(X1, Y1, X2, Y2),
-    write('X1: '),
-    write(X1),
-    nl,
-    write('Y1: '),
-    write(Y1),
-    nl,
-    write('X2: '),
-    write(X2),
-    nl,
-    write('Y2: '),
-    write(Y2),
-    nl.
+    move(X1, Y1, X2, Y2, B, B1),
+    display_game(B1, P),
+    game_loop(B1, P).
+
 
 get_move(X1, Y1, X2, Y2):-
     nl,
@@ -50,4 +42,30 @@ get_move(X1, Y1, X2, Y2):-
     read(Y2),
     nl.
 
+move(X1, Y1, X2, Y2, Board, NewBoard):-
+    get_cell(X1, Y1, Board, C1),
+    get_cell(X2, Y2, Board, C2),
+    change_cell(X1, Y1, Board, AuxBoard, C2),
+    change_cell(X2, Y2, AuxBoard, NewBoard, C1).
+
+get_cell(X, Y, Board, CellValue):-
+    nth0(X, Board, AuxRow),
+    nth0(Y, AuxRow, CellValue).
+
+change_cell(X, Y, Board, NewBoard, CellValue):-
+    get_to_row(X, Y, CellValue, Board, NewBoard).
+
+replace(0, NewC, [_|T], [NewC|T]).
+replace(Y, NewC, [H|T], [H|R]):- 
+    Y1 is Y-1, 
+    replace(Y1, NewC, T, R).
+
+get_to_row(X, Y, NewC, [H|T], [H1|R]):-  
+    X is 0,
+    replace(Y, NewC, H, H1),
+    T = R.
+
+get_to_row(X, Y, NewC, [H|T], [H|R]):-  
+    X1 is X-1, 
+    get_to_row(X1, Y, NewC, T, R).
 
