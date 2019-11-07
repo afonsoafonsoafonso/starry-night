@@ -9,9 +9,6 @@ startBoard([
         [-2 , -2 , -2 , -2 , -2 , -2 ]
         ]).
 
-board_setup(B, P):-
-    startBoard(B),
-    P is 1.
 
 start_game:-
     board_setup(B, P),
@@ -45,19 +42,6 @@ end_game_A(B):-
 end_game_B(B):-
     get_A_base_row(B, BRow),
     any_member([1,2,3], BRow).
-
-%utils
-any_member([H|_], L):-
-    member(H, L).
-
-any_member([_|T], L):-
-    any_member(T, L).
-
-get_B_base_row(B, BRow):-
-    nth0(7, B, BRow).
-
-get_A_base_row(B, BRow):-
-    nth0(0, B, BRow).
 
 /*
 * Reads coords of chosen piece and destination.
@@ -170,51 +154,4 @@ home_row_check_B(X, B, P, I):-
     not(any_member([1,2,3], Row)).
 
 
-/*
-* Parses the value in the current board to 'CellValue'
-* @param X, Y, Board, CellValue
-*/
-get_cell(X, Y, Board, CellValue):-
-    nth0(X, Board, AuxRow),
-    nth0(Y, AuxRow, CellValue).
-
-/*
-* Verifies if the coords chosen contains a valid piece.
-* @param C1
-*/
-cell_with_ship(C):-
-    C>0.
-
-% checks if given cell is empty
-empty_cell(C):-
-    C=:=0.
-
-change_cell(X, Y, Board, NewBoard, CellValue):-
-    get_to_row(X, Y, CellValue, Board, NewBoard).
-
-/*
-*
-*/
-replace(0, NewC, [_|T], [NewC|T]).
-replace(Y, NewC, [H|T], [H|R]):- 
-    Y1 is Y-1, 
-    replace(Y1, NewC, T, R).
-
-/*
-*
-*/
-get_to_row(X, Y, NewC, [H|T], [H1|R]):-  
-    X is 0,
-    replace(Y, NewC, H, H1),
-    T = R.
-
-/*
-*
-*/
-get_to_row(X, Y, NewC, [H|T], [H|R]):-  
-    X1 is X-1, 
-    get_to_row(X1, Y, NewC, T, R).
-
-not(Goal):-
-    \+ Goal.
 
