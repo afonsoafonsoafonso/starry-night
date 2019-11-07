@@ -87,13 +87,17 @@ move(X1, Y1, X2, Y2, Board, NewBoard):-
     get_cell(X1, Y1, Board, C1),
     cell_with_ship(C1),
     get_cell(X2, Y2, Board, C2),
-    %empty_cell(C2),
+    dest_cell_in_reach(X1, Y1, X2, Y2, C1),
     change_cell(X1, Y1, Board, AuxBoard, C2),
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
 
 move(_, _, _, _, Board, NewBoard):-
     get_move(X1, Y1, X2, Y2),
     move(X1, Y1, X2, Y2, Board, NewBoard).
+
+dest_cell_in_reach(X1, Y1, X2, Y2, C):-
+    C =:= abs(X2-X1) + abs(Y2-Y1).
+    
 
 /*
 * Parses the value in the current board to 'CellValue'
