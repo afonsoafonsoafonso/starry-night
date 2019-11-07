@@ -57,7 +57,7 @@ display_game(B, P):-
 * @param P
 */
 display_player(P):-
-    1 =:= mod(P, 2),
+    P =:= 2,
     write('Player 2').
 
 display_player(P):- 

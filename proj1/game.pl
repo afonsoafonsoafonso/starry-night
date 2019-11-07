@@ -27,10 +27,10 @@ game_loop(B, P):-
 
 game_loop(B, P):-
     display_game(B, P),    
-    get_move(X1, Y1, X2, Y2),
-    move(X1, Y1, X2, Y2, B, B1),
-    Pnext is P+1,
-    game_loop(B1, Pnext).
+    move(B, B1, P),
+    ( P =:= 1 -> game_loop(B1, 2) 
+    ; game_loop(B1, 1) 
+    ).
 
 /*
 * Verifies if any ship as landed in any of the two bases.
@@ -83,21 +83,57 @@ get_move(X1, Y1, X2, Y2):-
 * If piece or destination not valid, asks again for the coords.
 * @param X1, Y1, X2, Y2, Board, NewBoard
 */
-move(X1, Y1, X2, Y2, Board, NewBoard):-
+move(Board, NewBoard, P):-
+    get_move(X1, Y1, X2, Y2),
     get_cell(X1, Y1, Board, C1),
     cell_with_ship(C1),
+    home_row_check(X1, Board, P),
     get_cell(X2, Y2, Board, C2),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1),
     change_cell(X1, Y1, Board, AuxBoard, C2),
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
 
-move(_, _, _, _, Board, NewBoard):-
-    get_move(X1, Y1, X2, Y2),
-    move(X1, Y1, X2, Y2, Board, NewBoard).
+move(Board, NewBoard, P):-
+    display_game(Board, P),
+    move(Board, NewBoard, P).
 
 dest_cell_in_reach(X1, Y1, X2, Y2, C):-
     C =:= abs(X2-X1) + abs(Y2-Y1).
-    
+
+home_row_check(X, B, P):-
+    P =:= 1,
+    home_row_check_A(X, B, P, 1).
+
+home_row_check(X, B, P):-
+    P =:= 2,
+    home_row_check_B(X, B, P, 6).
+
+home_row_check_A(X, B, P, I):-
+    I<X,
+    nth0(I, B, Row),
+    not(any_member([1,2,3], Row)),
+    I1 is I+1,
+    home_row_check_A(X, B, P, I1).
+
+home_row_check_A(X, B, P, I):-
+    not(I<X),
+    I1 is I-1,
+    nth0(I1, B, Row),
+    not(any_member([1,2,3], Row)).
+
+home_row_check_B(X, B, P, I):-
+    I>X,
+    nth0(I, B, Row),
+    not(any_member([1,2,3], Row)),
+    I1 is I-1,
+    home_row_check_B(X, B, P, I1).
+
+home_row_check_B(X, B, P, I):-
+    not(I>X),
+    I1 is I+1,
+    nth0(I1, B, Row),
+    not(any_member([1,2,3], Row)).
+
 
 /*
 * Parses the value in the current board to 'CellValue'
