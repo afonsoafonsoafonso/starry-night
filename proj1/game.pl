@@ -114,6 +114,23 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     change_cell(X3, Y3, AuxBoard2, NewBoard, C2).
 
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
+    Choice =:= 2,
+    nl,
+    write('X3:'),
+    nl,
+    read(X3),
+    write('Y3:'),
+    nl,
+    read(Y3),
+    get_cell(X3, Y3, Board, C3),
+    dest_cell_in_reach(X2, Y2, X3, Y3, C2),
+    ( not(cell_with_ship(C3)) ->
+      change_cell(X1, Y1, Board, AuxBoard, C3),
+      change_cell(X3, Y3, AuxBoard, NewBoard, C1)
+    ; chain_move(X1, Y1, X3, Y3, C1, C3, Board, NewBoard, Choice)   
+    ).
+
+chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
    chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice). 
 
 dest_cell_in_reach(X1, Y1, X2, Y2, C):-
