@@ -118,7 +118,7 @@ home_row_check_A(X, B, P, I):-
 home_row_check_A(X, B, P, I):-
     not(I<X),
     I1 is I-1,
-    nth0(I1, B, Row),
+    nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
     not(any_member([1,2,3], Row)).
 
 home_row_check_B(X, B, P, I):-
@@ -131,7 +131,7 @@ home_row_check_B(X, B, P, I):-
 home_row_check_B(X, B, P, I):-
     not(I>X),
     I1 is I+1,
-    nth0(I1, B, Row),
+    nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
     not(any_member([1,2,3], Row)).
 
 
