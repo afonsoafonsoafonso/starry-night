@@ -59,14 +59,6 @@ get_B_base_row(B, BRow):-
 get_A_base_row(B, BRow):-
     nth0(0, B, BRow).
 
-end_game_B(Row, Column, B, C) :-
-    get_cell(Row, Column, B, C),
-    C < 0,
-    write('Game Over!\nPlayer 2 lost!\n'),
-    Column+1 < 6,
-    (Column_next is Column+1),
-    end_game_b(Row, Column_next, B, C).
-
 /*
 * Reads coords of chosen piece and destination.
 * @param X1, Y1, X2, Y2
