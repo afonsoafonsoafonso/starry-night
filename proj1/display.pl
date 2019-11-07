@@ -56,8 +56,12 @@ display_game(B, P):-
 * Displays player's turn.
 * @param P
 */
-display_player(P) :- write('Player 2') :- 1 =:= mod(P, 2).
-display_player(P) :- write('Player 1').
+display_player(P):-
+    1 =:= mod(P, 2),
+    write('Player 2').
+
+display_player(P):- 
+    write('Player 1').
 
 /*
 *
