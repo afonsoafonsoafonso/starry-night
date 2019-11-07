@@ -93,6 +93,7 @@ move(Board, NewBoard, P):-
     move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard).
 
 move(Board, NewBoard, P):-
+    write('invalid move'),
     display_game(Board, P),
     move(Board, NewBoard, P).
 
@@ -125,8 +126,11 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     dest_cell_in_reach(X2, Y2, X3, Y3, C1),
     not(cell_with_ship(C3)),
     change_cell(X1, Y1, Board, AuxBoard, C3),
-    change_cell(X2, Y2, Board, AuxBoard, C1),
-    change_cell(X3, Y3, Board, NewBoard, C2).
+    change_cell(X2, Y2, AuxBoard, AuxBoard2, C1),
+    change_cell(X3, Y3, AuxBoard2, NewBoard, C2).
+
+chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
+   chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice). 
 
 dest_cell_in_reach(X1, Y1, X2, Y2, C):-
     C =:= abs(X2-X1) + abs(Y2-Y1).
@@ -210,4 +214,7 @@ get_to_row(X, Y, NewC, [H|T], [H1|R]):-
 get_to_row(X, Y, NewC, [H|T], [H|R]):-  
     X1 is X-1, 
     get_to_row(X1, Y, NewC, T, R).
+
+not(Goal):-
+    \+ Goal.
 
