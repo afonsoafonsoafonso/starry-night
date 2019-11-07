@@ -4,6 +4,9 @@
 :- consult('board_ops.pl').
 :- use_module(library(lists)).
 
+/*
+* Main.
+*/
 menu:-
     start_game.
     

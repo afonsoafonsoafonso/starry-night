@@ -13,7 +13,7 @@ midBoard([
     [-2 , -2 , -2 , -2 , -2 , -2 ] 
     ]).
 
-%example of possible board at end game (player B win    )
+% example of possible board at end game (player B win    )
 endBoard([
     [-1 , -1 ,  2 , -1 , -1 , -1 ],
     [ 0 ,  0 ,  1 ,  0 ,  0 ,  2 ],
@@ -41,7 +41,8 @@ display_endBoard:-
 /* -------- STARTS HERE -------- */
 
 /*
-*
+* Main funtion to display the board game.
+* @param B, P
 */
 display_game(B, P):-
     nl,
@@ -64,7 +65,8 @@ display_player(P):-
     write('Player 1').
 
 /*
-*
+* 
+* @param [H|T], Nrow
 */
 display_matrix([], _).
 display_matrix([H|T], Nrow):-
@@ -78,7 +80,8 @@ display_matrix([H|T], Nrow):-
     display_matrix(T, Nrow1).
 
 /*
-*
+* Displays the cell values of each row.
+* @param [H|T], Nrow
 */
 display_row([], _).
 display_row([H|T], Nrow):-
@@ -87,7 +90,7 @@ display_row([H|T], Nrow):-
     display_row(T, Nrow).
 
 /*
-* Funtions that display the cell value.
+* Displays the cell value.
 * @param 'value'
 */
 display_cell(-1):- write('A').

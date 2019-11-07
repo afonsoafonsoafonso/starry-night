@@ -1,3 +1,6 @@
+/*
+* Inicial Board game.
+*/
 startBoard([
         [-1 , -1 , -1 , -1 , -1 , -1 ],
         [ 3 ,  2 ,  1 ,  3 ,  1 ,  2 ],
@@ -14,6 +17,11 @@ start_game:-
     board_setup(B, P),
     game_loop(B, P).
 
+/* 
+* Verifies game over.
+* Inicializes the display of the board and coordenates the players turns and moves. 
+* @param B, P
+*/
 game_loop(B, P):-
     end_game_A(B),
     write('PLAYER A WON').
@@ -32,8 +40,6 @@ game_loop(B, P):-
 /*
 * Verifies if any ship as landed in any of the two bases.
 * @param B
-* @param Row, Column, B, C
-* @param Row, Column, B, C
 */
 end_game_A(B):-
     get_B_base_row(B, BRow),
@@ -68,12 +74,16 @@ get_move(X1, Y1, X2, Y2):-
 * @param X1, Y1, X2, Y2, Board, NewBoard
 */
 move(Board, NewBoard, P):-
+    /* Gets the desired move and validates the ship. */
     get_move(X1, Y1, X2, Y2),
     get_cell(X1, Y1, Board, C1),
     cell_with_ship(C1),
+    /* Verifies if the player chose a ship from his Home row. */
     home_row_check(X1, Board, P),
+    /* Validates the destination of the current ship. */
     get_cell(X2, Y2, Board, C2),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1),
+    /* Moves the ship. */
     move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard).
 
 move(Board, NewBoard, P):-
@@ -81,6 +91,10 @@ move(Board, NewBoard, P):-
     display_game(Board, P),
     move(Board, NewBoard, P).
 
+/*
+*
+* @param X1, Y1, X2, Y2, C1, C2, Board, NewBoard
+*/
 move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
     cell_with_ship(C2),
     write(C2),
@@ -96,6 +110,10 @@ move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
     change_cell(X1, Y1, Board, AuxBoard, C2),
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
 
+/*
+*
+* @param X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice
+*/
 % falta verificar se posição final do reprogram não é nenhuma base
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 1,
@@ -133,9 +151,17 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
    chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice). 
 
+/*
+* Verifies if the destination cell chosen can be reached with the current ship.
+* @param X1, Y1, X2, Y2, C
+*/
 dest_cell_in_reach(X1, Y1, X2, Y2, C):-
     C =:= abs(X2-X1) + abs(Y2-Y1).
 
+/*
+* Funtions that verify if the Base rows are ocupied with a ship.
+* If so, the opposite player wins.
+*/
 home_row_check(X, B, P):-
     P =:= 1,
     home_row_check_A(X, B, P, 1).
