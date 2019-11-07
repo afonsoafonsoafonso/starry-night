@@ -90,12 +90,43 @@ move(Board, NewBoard, P):-
     home_row_check(X1, Board, P),
     get_cell(X2, Y2, Board, C2),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1),
-    change_cell(X1, Y1, Board, AuxBoard, C2),
-    change_cell(X2, Y2, AuxBoard, NewBoard, C1).
+    move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard).
 
 move(Board, NewBoard, P):-
     display_game(Board, P),
     move(Board, NewBoard, P).
+
+move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
+    cell_with_ship(C2),
+    write(C2),
+    nl,  
+    write('1: Re-program coordinates'),
+    nl, 
+    write('2: Rocket Boost'),
+    nl, 
+    read(Choice),
+    chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice).
+
+move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
+    change_cell(X1, Y1, Board, AuxBoard, C2),
+    change_cell(X2, Y2, AuxBoard, NewBoard, C1).
+
+% falta verificar se posição final do reprogram não é nenhuma base
+chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
+    Choice =:= 1,
+    nl,
+    write('X3:'),
+    nl,
+    read(X3),
+    write('Y3:'),
+    nl,
+    read(Y3),
+    get_cell(X3, Y3, Board, C3),
+    dest_cell_in_reach(X2, Y2, X3, Y3, C1),
+    not(cell_with_ship(C3)),
+    change_cell(X1, Y1, Board, AuxBoard, C3),
+    change_cell(X2, Y2, Board, AuxBoard, C1),
+    change_cell(X3, Y3, Board, NewBoard, C2).
 
 dest_cell_in_reach(X1, Y1, X2, Y2, C):-
     C =:= abs(X2-X1) + abs(Y2-Y1).
@@ -149,9 +180,6 @@ get_cell(X, Y, Board, CellValue):-
 */
 cell_with_ship(C):-
     C>0.
-
-cell_with_ship(_):- 
-    write('invalid cell\n').
 
 % checks if given cell is empty
 empty_cell(C):-
