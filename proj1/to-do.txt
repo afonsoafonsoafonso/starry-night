@@ -2,8 +2,26 @@ IMPROVEMENTS
 
 - impedir que um jogador aterre na sua propria base
 
+- validação de input (robustez)
+
+
+
 FULL FLEDGE FEATURES
 
 - rocket boost
 
 - cena de guardar por onde já passou (impedir backtracking)
+
+
+MODOS:
+
+- Humano vs Humano 
+- Humano vs PC
+- PC vs PC
+
+PC:
+- modo easy (jogadas aleatórias)
+- modo hard (tenta avaliar as jogadas)
+
+MERDANÇOS:
+- alterar código de acordo a coincidir com exigências do relatório (n tinha reparado)
