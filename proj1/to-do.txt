@@ -8,8 +8,6 @@ IMPROVEMENTS
 
 FULL FLEDGE FEATURES
 
-- rocket boost
-
 - cena de guardar por onde já passou (impedir backtracking)
 
 

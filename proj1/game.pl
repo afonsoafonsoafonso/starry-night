@@ -145,7 +145,7 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     ( not(cell_with_ship(C3)) ->
       change_cell(X1, Y1, Board, AuxBoard, C3),
       change_cell(X3, Y3, AuxBoard, NewBoard, C1)
-    ; chain_move(X1, Y1, X3, Y3, C1, C3, Board, NewBoard, Choice)   
+    ; move2(X1, Y1, X3, Y3, C1, C3, Board, NewBoard)  
     ).
 
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
