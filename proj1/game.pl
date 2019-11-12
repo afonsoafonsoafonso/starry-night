@@ -125,7 +125,7 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     get_cell(X3, Y3, Board, C3),
     %dest_cell_in_reach(X2, Y2, X3, Y3, C1),
     %not(cell_with_ship(C3)),
-    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
+    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, Board, Choice),
     %valid_chain_moves(X1, Y1, X2, Y2, Board, MoveList),
     %member([X3, Y3], MoveList),
     %write('WADONAWOD'),
@@ -145,7 +145,7 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     read(Y3),
     get_cell(X3, Y3, Board, C3),
     %dest_cell_in_reach(X2, Y2, X3, Y3, C2),
-    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
+    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, Board, Choice),
     %valid_chain_moves(X1, Y1, X2, Y2, Board, MoveList),
     %member([X3, Y3], MoveList),
     %write('WADONAWOD'),
@@ -220,6 +220,7 @@ valid_moves(B, P, MoveList):-
 
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
     Choice =:= 1,
+    get_cell(X1, Y1, B, C1),
     get_cell(X3, Y3, B, C3),
     dest_cell_in_reach(X2, Y2, X3, Y3, C1),
     not(cell_with_ship(C3)).
