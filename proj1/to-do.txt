@@ -1,6 +1,6 @@
 IMPROVEMENTS
 
-- impedir que um jogador aterre na sua propria base
+- impedir que um jogador aterre na sua propria base (incluindo o cpu)
 
 - validação de input (robustez)
 
@@ -18,7 +18,7 @@ MODOS:
 - PC vs PC
 
 PC:
-- modo easy (jogadas aleatórias)
+- modo easy (jogadas aleatórias) -- FEITO
 - modo hard (tenta avaliar as jogadas)
 
 MERDANÇOS:

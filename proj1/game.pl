@@ -15,7 +15,7 @@ startBoard([
 
 start_game:-
     board_setup(B, P),
-    game_loop(B, P).
+    game_loop(B, P, 1).
 
 /* 
 * Verifies game over.
@@ -244,17 +244,16 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, B, Choice):-
 valid_chain_moves(X1, Y1, X2, Y2, B, MoveList):-
     Choice1 is 1,
     Choice2 is 2,
-    nl,
-    write('DWAOINDAWOD'),
-    nl,
     findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice1), MoveList1),
-    write('DWAOINDAWOD2222222222222222'),
-    nl,
     findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice2), MoveList2),
-    write('DWAOINDAWOD333333333333333'),
-    nl,
-    append(MoveList1, MoveList2, MoveList),
-    write('DWAOINDAWOD44444444444444'),
-    nl.
+    append(MoveList1, MoveList2, MoveList).
+
+valid_chain_moves(X1, Y1, X2, Y2, B, MoveList, Choice):-
+    Choice =:= 1,
+    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice), MoveList).
+
+valid_chain_moves(X1, Y1, X2, Y2, B, MoveList, Choice):-
+    Choice =:= 2,
+    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice), MoveList).
 
 
