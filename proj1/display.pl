@@ -100,6 +100,28 @@ display_cell(1):- write('o').
 display_cell(2):- write('O').
 display_cell(3):- write('0').
 
+/*
+* Displays possible destinations for the current piece.
+* @param MoveList
+*/
+display_piece_possible_destinations(MoveList):-
+    nl,
+    write('Possible destinations:'),
+    nl, 
+    write(MoveList),
+    nl.
+
+/*
+* Displays number of moves allowed for the piece.
+* @param X, Y, Board
+*/
+display_number_of_moves_allowed(X, Y, Board):-
+    get_cell(X, Y, Board, CellValue),
+    nl,
+    write('Number of moves allowed: '),
+    write(CellValue),
+    nl.
+
 % TO-DO:
 %   - display tabuleiro + flexível
 

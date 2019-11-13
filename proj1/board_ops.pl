@@ -3,6 +3,80 @@ board_setup(B, P):-
     P is 1.
 
 /*
+* Reads coords of chosen piece.
+* @param X1, Y1
+*/
+get_piece_coords(X1, Y1, Board, P):-
+    nl,
+    write('Piece Coords:'),
+    nl,
+    write('X: \n'),
+    read(X1),
+    nl,
+    write('Y: \n'),
+    read(Y1),
+    /* Verifies if the piece belong to the home row. */
+    home_row_check(X1, Board, P).
+
+get_piece_coords(X1, Y1, Board, P):-
+    nl,
+    write('Invalid Piece! Piece does not belong to your home row!'),
+    nl,
+    get_piece_coords(X1, Y1, Board, P).
+    
+
+/*
+* Get funtion to list containing all possible destinations with the current piece.
+* @param X, Y, P, B, MoveList
+*/
+get_piece_possible_destinations(X, Y, B, MoveList):-
+    findall([X_dest, Y_dest], valid_move(X, Y, X_dest, Y_dest, B), MoveList).
+
+
+/*
+* Reads coords of chosen destination. 
+* @param X2, Y2
+*/  
+get_destination_coords(X2, Y2):-
+    nl,
+    write('Destination Coords: '),
+    nl,
+    write('X: \n'),
+    read(X2),
+    nl,
+    write('Y: \n'),
+    read(Y2).
+
+/*
+* Get funtion for chain move choise.
+* @param Choise
+*/
+get_chain_move(Choise):-
+    nl,
+    write('Chain Moves:'),
+    nl,  
+    write('1: Re-program coordinates'),
+    nl, 
+    write('2: Rocket Boost'),
+    nl, 
+    read(Choise).
+
+/*
+* Reads chain coords for the Re-program coordinates or Rocket Boost. 
+* @param X3, Y3
+*/
+get_chain_move_coords(X3, Y3):-
+    nl,
+    write('Chain Coords:'),
+    nl,
+    write('X3:'),
+    nl,
+    read(X3),
+    write('Y3:'),
+    nl,
+    read(Y3).
+
+/*
 * Parses the value in the current board to 'CellValue'
 * @param X, Y, Board, CellValue
 */

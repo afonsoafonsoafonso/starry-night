@@ -15,7 +15,7 @@ startBoard([
 
 start_game:-
     board_setup(B, P),
-    game_loop(B, P, 1).
+    game_loop(B, P).
 
 /* 
 * Verifies game over.
@@ -31,7 +31,7 @@ game_loop(B, P):-
     write('PLAYER B WON').
 
 game_loop(B, P):-
-    display_game(B, P),    
+    display_game(B, P),  
     move(B, B1, P),
     ( P =:= 1 -> game_loop(B1, 2) 
     ; game_loop(B1, 1) 
@@ -50,41 +50,23 @@ end_game_B(B):-
     any_member([1,2,3], BRow).
 
 /*
-* Reads coords of chosen piece and destination.
-* @param X1, Y1, X2, Y2
-*/
-get_move(X1, Y1, X2, Y2):-
-    nl,
-    write('X1: \n'),
-    read(X1),
-    nl,
-    write('Y1: \n'),
-    read(Y1),
-    nl,
-    write('X2: \n'),
-    read(X2),
-    nl,
-    write('Y2: \n'),
-    read(Y2),
-    nl.
-
-/*
 * Moves the chosen piece to the chosen destination.
 * If piece or destination not valid, asks again for the coords.
 * @param X1, Y1, X2, Y2, Board, NewBoard
 */
 move(Board, NewBoard, P):-
-    get_move(X1, Y1, X2, Y2),
+    get_piece_coords(X1, Y1, Board, P),
+    display_number_of_moves_allowed(X1, Y1, Board),
+    get_piece_possible_destinations(X1, Y1, Board, MoveList),
+    display_piece_possible_destinations(MoveList),
+    get_destination_coords(X2, Y2),
     get_cell(X1, Y1, Board, C1),
     get_cell(X2, Y2, Board, C2),
-    valid_move(X1, Y1, X2, Y2, C1, C2, P, Board),
-    %valid_moves(Board, P, MoveList),
-    %member([X1, Y1, X2, Y2], MoveList),
-    %write('DAWOINDWA'),
+    valid_move(X1, Y1, X2, Y2, C1, C2, Board),
     move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard).
 
 move(Board, NewBoard, P):-
-    write('invalid move'),
+    write('Invalid move!'),
     display_game(Board, P),
     move(Board, NewBoard, P).
 
@@ -94,13 +76,7 @@ move(Board, NewBoard, P):-
 */
 move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
     cell_with_ship(C2),
-    write(C2),
-    nl,  
-    write('1: Re-program coordinates'),
-    nl, 
-    write('2: Rocket Boost'),
-    nl, 
-    read(Choice),
+    get_chain_move(Choice),
     chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice).
 
 move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
@@ -112,44 +88,25 @@ move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
 * @param X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice
 */
 % falta verificar se posição final do reprogram não é nenhuma base
-% Choice == 1 --> Repogram Coordinates
+/* Choice == 1 --> Repogram Coordinates */
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 1,
-    nl,
-    write('X3:'),
-    nl,
-    read(X3),
-    write('Y3:'),
-    nl,
-    read(Y3),
+    get_chain_move_coords(X3, Y3),
     get_cell(X3, Y3, Board, C3),
-    %dest_cell_in_reach(X2, Y2, X3, Y3, C1),
-    %not(cell_with_ship(C3)),
-    %valid_chain_move(X1, Y1, X2, Y2, X3, Y3, Board, Choice),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
-    %valid_chain_moves(X1, Y1, X2, Y2, Board, MoveList),
-    %member([X3, Y3], MoveList),
-    %write('WADONAWOD'),
     change_cell(X1, Y1, Board, AuxBoard, C3),
     change_cell(X2, Y2, AuxBoard, AuxBoard2, C1),
     change_cell(X3, Y3, AuxBoard2, NewBoard, C2).
 
-% Choice == 2 --> Rocket Boost
+/* Choice == 2 --> Rocket Boost */
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 2,
-    nl,
-    write('X3:'),
-    nl,
-    read(X3),
-    write('Y3:'),
-    nl,
-    read(Y3),
+    display_number_of_moves_allowed(X2, Y2, Board),
+    get_piece_possible_destinations(X2, Y2, Board, DestinationList),
+    display_piece_possible_destinations(DestinationList),
+    get_chain_move_coords(X3, Y3),
     get_cell(X3, Y3, Board, C3),
-    %valid_chain_move(X1, Y1, X2, Y2, X3, Y3, Board, Choice),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
-    %valid_chain_moves(X1, Y1, X2, Y2, Board, MoveList),
-    %member([X3, Y3], MoveList),
-    %write('WADONAWOD'),
     ( not(cell_with_ship(C3)) ->
       change_cell(X1, Y1, Board, AuxBoard, C3),
       change_cell(X3, Y3, AuxBoard, NewBoard, C1)
@@ -204,21 +161,28 @@ home_row_check_B(X, B, P, I):-
     nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
     not(any_member([1,2,3], Row)).
 
-valid_move(X1, Y1, X2, Y2, C1, C2, P, B):-
+/*
+*
+*/
+valid_move(X1, Y1, X2, Y2, C1, C2, B):-
     cell_with_ship(C1),
-    home_row_check(X1, B, P),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1).
 
-valid_move(X1, Y1, X2, Y2, P, B):-
+valid_move(X1, Y1, X2, Y2, B):-
     get_cell(X1, Y1, B, C1),
     get_cell(X2, Y2, B, C2),
     cell_with_ship(C1),
-    home_row_check(X1, B, P),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1).
 
+/*
+*
+*/
 valid_moves(B, P, MoveList):-
-    findall([X1, Y1, X2, Y2], valid_move(X1, Y1, X2, Y2, P, B), MoveList).
+    findall([X1, Y1, X2, Y2], valid_move(X1, Y1, X2, Y2, B), MoveList).
 
+/*
+*
+*/
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
     Choice =:= 1,
     get_cell(X1, Y1, B, C1),
@@ -232,6 +196,9 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
     get_cell(X3, Y3, B, C3),
     dest_cell_in_reach(X2, Y2, X3, Y3, C2).
 
+/*
+*
+*/
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, B, Choice):-
     Choice =:= 1,
     dest_cell_in_reach(X2, Y2, X3, Y3, C1),
@@ -241,6 +208,9 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, B, Choice):-
     Choice =:= 2,
     dest_cell_in_reach(X2, Y2, X3, Y3, C2).
 
+/*
+*
+*/
 valid_chain_moves(X1, Y1, X2, Y2, B, MoveList):-
     Choice1 is 1,
     Choice2 is 2,
