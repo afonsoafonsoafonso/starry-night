@@ -1,22 +1,12 @@
 IMPROVEMENTS
-
-- impedir que um jogador aterre na sua propria base (incluindo o cpu) - FEITO
-
 - validação de input (robustez)
 
 REGRAS :
 - não pode passar por casas que têm naves, apenas aterrar nelas (é preciso implementar moves casa a casa)
-- repogram coordinates não pode ser com destino a base de um jogador - FEITO
 - qualquer movimento fora da grelha interna 6x6 conta como apenas um (ou seja, 
 movimentos têm que se esgotar para vencer o jogo)
 
-ERROS:
-    - cena de impedir que seja possível perder o jogo de propósito faz com que n seja possível 
-    fazer rockets boosts para a base inimiga tb não sei porquê
-
-
 FULL FLEDGE FEATURES
-
 - cena de guardar por onde já passou (impedir backtracking)
 
 
