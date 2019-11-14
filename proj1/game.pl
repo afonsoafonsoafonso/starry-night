@@ -19,11 +19,12 @@ startBoard([
 */
 game_loop(B, P):-
     end_game_A(B),
-    write('PLAYER A WON').
+    write('PLAYER A WON'),
+    gameover_menu(1).
 
 game_loop(B, P):-
     end_game_B(B),
-    write('PLAYER B WON').
+    gameover_menu(2).
 
 game_loop(B, P):-
     display_game(B, P), 
