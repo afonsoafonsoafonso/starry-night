@@ -164,14 +164,23 @@ home_row_check_B(X, B, P, I):-
 valid_move(X1, Y1, X2, Y2, C1, C2, P, B):-
     cell_with_ship(C1),
     home_row_check(X1, B, P),
-    dest_cell_in_reach(X1, Y1, X2, Y2, C1).
+    dest_cell_in_reach(X1, Y1, X2, Y2, C1),
+    not(is_base(X2, P)).
 
 valid_move(X1, Y1, X2, Y2, P, B):-
     get_cell(X1, Y1, B, C1),
     get_cell(X2, Y2, B, C2),
     cell_with_ship(C1),
     home_row_check(X1, B, P),
+    not(is_base(X2, P)),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1).
+
+is_base(X, 1):-
+    X=:=0.
+
+is_base(X, 2):-
+    X=:=7.
+
 /*
 *
 */
