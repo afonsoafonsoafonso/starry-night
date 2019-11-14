@@ -12,7 +12,7 @@ process_menu_input(2):-
     start_game(2).
 
 process_menu_input(3):-
-    write('NOT IMPLEMENTED YET').
+    start_game(3).
 
 process_menu_input(4).
 
@@ -25,6 +25,11 @@ start_game(Option):-
     Option =:= 2,
     board_setup(B, P),
     game_loop(B, P, 1).
+
+start_game(Option):-
+    Option =:= 3,
+    board_setup(B, P),
+    game_loop(B, P, 2).
 
 display_menu:-
     nl,nl,

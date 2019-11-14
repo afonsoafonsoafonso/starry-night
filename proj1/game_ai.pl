@@ -1,8 +1,8 @@
-game_loop(B, P, 1):-
+game_loop(B, P, _):-
     end_game_A(B),
     write('PLAYER A WON').
 
-game_loop(B, P, 1):-
+game_loop(B, P, _):-
     end_game_B(B),
     write('PLAYER B WON').
 
@@ -14,6 +14,16 @@ game_loop(B, P, 1):-
     ; cpu_move(B, B1, 2),
       game_loop(B1, 1, 1)
     ).
+
+game_loop(B, P, 2):-
+    display_game(B, P),
+    ( P =:= 1 ->
+      cpu_move(B, B1, 1),
+      game_loop(B1, 2, 2)
+    ; cpu_move(B, B1, 2),
+      game_loop(B1, 1, 2)
+    ),
+    sleep(5).
 
 cpu_move(Board, NewBoard, P):-
     valid_moves(Board, P, MoveList),
