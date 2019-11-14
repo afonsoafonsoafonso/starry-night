@@ -40,6 +40,8 @@ display_endBoard:-
 
 /* -------- STARTS HERE -------- */
 
+
+
 /*
 * Main funtion to display the board game.
 * @param B, P
