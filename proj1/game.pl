@@ -26,7 +26,8 @@ game_loop(B, P):-
     write('PLAYER B WON').
 
 game_loop(B, P):-
-    display_game(B, P),  
+    display_game(B, P), 
+    write_turn(P), 
     move(B, B1, P),
     ( P =:= 1 -> game_loop(B1, 2) 
     ; game_loop(B1, 1) 

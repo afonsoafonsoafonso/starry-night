@@ -7,7 +7,6 @@ board_setup(B, P):-
 * @param X1, Y1
 */
 get_piece_coords(X1, Y1, Board, P):-
-    write_turn(P),
     write(' > Select your ship [ X. ; Y. ]:'),
     nl,
     %write(' > X: \n'),
@@ -16,11 +15,13 @@ get_piece_coords(X1, Y1, Board, P):-
     %write(' > Y: \n'),
     read(Y1),
     /* Verifies if the piece belong to the home row. */
+    get_cell(X1, Y1, Board, C1),
+    cell_with_ship(C1),
     home_row_check(X1, Board, P).
 
 get_piece_coords(X1, Y1, Board, P):-
-    nl,
     write(' !!! Invalid cell: you must select a non-empty cell from your home-row.'),
+    nl,
     nl,
     get_piece_coords(X1, Y1, Board, P).
     
