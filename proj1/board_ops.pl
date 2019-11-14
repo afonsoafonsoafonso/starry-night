@@ -39,7 +39,7 @@ get_piece_possible_destinations(X, Y, B, MoveList):-
 */  
 get_destination_coords(X2, Y2):-
     nl,
-    write(' > Select your destination (X.Y.):'),
+    write(' > Select your destination [ X. ; Y.]:'),
     nl,
     %write(' > X: \n'),
     read(X2),

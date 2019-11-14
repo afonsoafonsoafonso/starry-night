@@ -53,7 +53,9 @@ display_game(B, P):-
     nl,
     write('      0     1     2     3     4     5 \n'),
     write('   +-----+-----+-----+-----+-----+-----+'),
-    display_matrix(B, 0).
+    member(X, [1,2,3,4,5,6]),
+    home_row_check(X, B, P),
+    display_matrix(B, 0, X).
 
 /*
 * Displays player's turn.
@@ -70,8 +72,20 @@ display_player(P):-
 * 
 * @param [H|T], Nrow
 */
-display_matrix([], _).
-display_matrix([H|T], Nrow):-
+display_matrix([], _, _).
+display_matrix([H|T], Nrow, Homerow):-
+    Homerow=:=Nrow,
+    write('\n '),
+    write(Nrow),
+    write(' | '),
+    Nrow1 is Nrow+1,
+    display_row(H, Nrow1),
+    write(' <-- This is your home-row'),
+    nl,
+    write('   +-----+-----+-----+-----+-----+-----+'),
+    display_matrix(T, Nrow1, Homerow).
+
+display_matrix([H|T], Nrow, Homerow):-
     write('\n '),
     write(Nrow),
     write(' | '),
@@ -79,13 +93,13 @@ display_matrix([H|T], Nrow):-
     display_row(H, Nrow1),
     nl,
     write('   +-----+-----+-----+-----+-----+-----+'),
-    display_matrix(T, Nrow1).
+    display_matrix(T, Nrow1, Homerow).
 
 /*
 * Displays the cell values of each row.
 * @param [H|T], Nrow
 */
-display_row([], _).
+display_row([], Nrow).
 display_row([H|T], Nrow):-
     display_cell(H),
     write(' | '),
@@ -123,8 +137,8 @@ write_turn(2):-
 */
 display_piece_possible_destinations(MoveList):-
     nl,
-    write('Possible destinations:'),
-    nl, 
+    write(' - Possible destinations: '),
+    %nl, 
     write(MoveList),
     nl.
 
@@ -135,9 +149,8 @@ display_piece_possible_destinations(MoveList):-
 display_number_of_moves_allowed(X, Y, Board):-
     get_cell(X, Y, Board, CellValue),
     nl,
-    write('Number of moves allowed: '),
-    write(CellValue),
-    nl.
+    write(' - Number of moves allowed: '),
+    write(CellValue).
 
 % TO-DO:
 %   - display tabuleiro + flexível
