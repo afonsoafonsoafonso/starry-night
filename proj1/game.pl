@@ -71,12 +71,12 @@ move(Board, NewBoard, P):-
 *
 * @param X1, Y1, X2, Y2, C1, C2, Board, NewBoard
 */
-move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
+move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard):-
     cell_with_ship(C2),
     get_chain_move(Choice),
-    chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice).
+    chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice).
 
-move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
+move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard):-
     change_cell(X1, Y1, Board, AuxBoard, C2),
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
 
@@ -86,7 +86,7 @@ move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
 */
 % falta verificar se posição final do reprogram não é nenhuma base
 /* Choice == 1 --> Repogram Coordinates */
-chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
+chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
     Choice =:= 1,
     display_number_of_moves_allowed(X1, Y1, Board),
     valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 1),
@@ -99,7 +99,7 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     change_cell(X3, Y3, AuxBoard2, NewBoard, C2).
 
 /* Choice == 2 --> Rocket Boost */
-chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
+chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
     Choice =:= 2,
     display_number_of_moves_allowed(X2, Y2, Board),
     valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 2),
@@ -110,11 +110,11 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     ( not(cell_with_ship(C3)) ->
       change_cell(X1, Y1, Board, AuxBoard, C3),
       change_cell(X3, Y3, AuxBoard, NewBoard, C1)
-    ; move2(X1, Y1, X3, Y3, C1, C3, Board, NewBoard)  
+    ; move2(X1, Y1, X3, Y3, C1, C3, P, Board, NewBoard)  
     ).
 
-chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
-   chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice). 
+chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
+   chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice). 
 
 /*
 * Verifies if the destination cell chosen can be reached with the current ship.
@@ -175,12 +175,6 @@ valid_move(X1, Y1, X2, Y2, P, B):-
     not(is_base(X2, P)),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1).
 
-is_base(X, 1):-
-    X=:=0.
-
-is_base(X, 2):-
-    X=:=7.
-
 /*
 *
 */
@@ -224,7 +218,7 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
 /*
 *
 */
-valid_chain_moves(X1, Y1, X2, Y2, B, MoveList):-
+valid_chain_moves(X1, Y1, X2, Y2, P, B, MoveList):-
     Choice1 is 1,
     Choice2 is 2,
     findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice1), MoveList1),
@@ -238,5 +232,11 @@ valid_chain_moves(X1, Y1, X2, Y2, P, B, MoveList, Choice):-
 valid_chain_moves(X1, Y1, X2, Y2, P, B, MoveList, Choice):-
     Choice =:= 2,
     findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice), MoveList).
+
+is_base(X, 1):-
+    X=:=0.
+
+is_base(X, 2):-
+    X=:=7.
 
 
