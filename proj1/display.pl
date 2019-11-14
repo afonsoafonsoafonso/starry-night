@@ -47,6 +47,18 @@ display_endBoard:-
 * @param B, P
 */
 display_game(B, P):-
+    P =:= 1,
+    nl,
+    write('---------------------------------------------'),
+    nl,
+    nl,
+    write('      0     1     2     3     4     5 \n'),
+    write('   +-----+-----+-----+-----+-----+-----+'),
+    member(X, [6, 5, 4, 3, 2, 1]),
+    home_row_check(X, B, P),
+    display_matrix(B, 0, X).
+
+display_game(B, P):-
     nl,
     write('---------------------------------------------'),
     nl,

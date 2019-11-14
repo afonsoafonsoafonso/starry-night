@@ -195,13 +195,17 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
     get_cell(X1, Y1, B, C1),
     get_cell(X3, Y3, B, C3),
     dest_cell_in_reach(X2, Y2, X3, Y3, C1),
-    not(cell_with_ship(C3)).
+    not(cell_with_ship(C3)),
+    not(is_base(X3, 1)),
+    not(is_base(X3, 2)).
 
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
     Choice =:= 2,
     get_cell(X2, Y2, B, C2),
     get_cell(X3, Y3, B, C3),
-    dest_cell_in_reach(X2, Y2, X3, Y3, C2).
+    dest_cell_in_reach(X2, Y2, X3, Y3, C2),
+    not(is_base(X3, 1)),
+    not(is_base(X3, 2)).
 
 /*
 *
