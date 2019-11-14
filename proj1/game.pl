@@ -204,7 +204,7 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
     get_cell(X2, Y2, B, C2),
     get_cell(X3, Y3, B, C3),
     dest_cell_in_reach(X2, Y2, X3, Y3, C2),
-    not(is_base(X3, P)).
+    not(is_base(X3, P)). 
 
 /*
 *
