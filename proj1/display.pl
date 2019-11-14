@@ -45,12 +45,11 @@ display_endBoard:-
 * @param B, P
 */
 display_game(B, P):-
+    write('---------------------------------------------'),
     nl,
-    write('TURN: '),
-    display_player(P),
     nl,
-    write('     0   1   2   3   4   5 \n'),
-    write('  -|---|---|---|---|---|---|'),
+    write('      0     1     2     3     4     5 \n'),
+    write('   +-----+-----+-----+-----+-----+-----+'),
     display_matrix(B, 0).
 
 /*
@@ -76,7 +75,7 @@ display_matrix([H|T], Nrow):-
     Nrow1 is Nrow+1,
     display_row(H, Nrow1),
     nl,
-    write('  -|---|---|---|---|---|---|'),
+    write('   +-----+-----+-----+-----+-----+-----+'),
     display_matrix(T, Nrow1).
 
 /*
@@ -93,12 +92,12 @@ display_row([H|T], Nrow):-
 * Displays the cell value.
 * @param 'value'
 */
-display_cell(-1):- write('A').
-display_cell(-2):- write('B').
-display_cell(0):- write(' ').
-display_cell(1):- write('o').
-display_cell(2):- write('O').
-display_cell(3):- write('0').
+display_cell(-1):- write(' A ').
+display_cell(-2):- write(' B ').
+display_cell(0):- write('   ').
+display_cell(1):- write(' o ').
+display_cell(2):- write('-o-').
+display_cell(3):- write('|0|').
 
 /*
 * Displays possible destinations for the current piece.
