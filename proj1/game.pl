@@ -89,11 +89,11 @@ move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 1,
     display_number_of_moves_allowed(X1, Y1, Board),
-    valid_chain_moves(X1, Y1, X2, Y2, Board, DestList, 1),
+    valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 1),
     display_piece_possible_destinations(DestList),
     get_chain_move_coords(X3, Y3),
     get_cell(X3, Y3, Board, C3),
-    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
+    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
     change_cell(X1, Y1, Board, AuxBoard, C3),
     change_cell(X2, Y2, AuxBoard, AuxBoard2, C1),
     change_cell(X3, Y3, AuxBoard2, NewBoard, C2).
@@ -102,11 +102,11 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 2,
     display_number_of_moves_allowed(X2, Y2, Board),
-    valid_chain_moves(X1, Y1, X2, Y2, Board, DestList, 2),
+    valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 2),
     display_piece_possible_destinations(DestList),
     get_chain_move_coords(X3, Y3),
     get_cell(X3, Y3, Board, C3),
-    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
+    valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
     ( not(cell_with_ship(C3)) ->
       change_cell(X1, Y1, Board, AuxBoard, C3),
       change_cell(X3, Y3, AuxBoard, NewBoard, C1)
@@ -190,7 +190,7 @@ valid_moves(B, P, MoveList):-
 /*
 *
 */
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
+valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
     Choice =:= 1,
     get_cell(X1, Y1, B, C1),
     get_cell(X3, Y3, B, C3),
@@ -199,25 +199,27 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
     not(is_base(X3, 1)),
     not(is_base(X3, 2)).
 
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice):-
+valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
     Choice =:= 2,
     get_cell(X2, Y2, B, C2),
     get_cell(X3, Y3, B, C3),
     dest_cell_in_reach(X2, Y2, X3, Y3, C2),
-    not(is_base(X3, 1)),
-    not(is_base(X3, 2)).
+    not(is_base(X3, P)).
 
 /*
 *
 */
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, B, Choice):-
+valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
     Choice =:= 1,
     dest_cell_in_reach(X2, Y2, X3, Y3, C1),
-    not(cell_with_ship(C3)).
+    not(cell_with_ship(C3)),
+    not(is_base(X3, 1)),
+    not(is_base(X3, 2)).
 
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, B, Choice):-
+valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
     Choice =:= 2,
-    dest_cell_in_reach(X2, Y2, X3, Y3, C2).
+    dest_cell_in_reach(X2, Y2, X3, Y3, C2),
+    not(is_base(X3, P)).
 
 /*
 *
@@ -225,16 +227,16 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, B, Choice):-
 valid_chain_moves(X1, Y1, X2, Y2, B, MoveList):-
     Choice1 is 1,
     Choice2 is 2,
-    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice1), MoveList1),
-    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice2), MoveList2),
+    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice1), MoveList1),
+    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice2), MoveList2),
     append(MoveList1, MoveList2, MoveList).
 
-valid_chain_moves(X1, Y1, X2, Y2, B, MoveList, Choice):-
+valid_chain_moves(X1, Y1, X2, Y2, P, B, MoveList, Choice):-
     Choice =:= 1,
-    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice), MoveList).
+    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice), MoveList).
 
-valid_chain_moves(X1, Y1, X2, Y2, B, MoveList, Choice):-
+valid_chain_moves(X1, Y1, X2, Y2, P, B, MoveList, Choice):-
     Choice =:= 2,
-    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, B, Choice), MoveList).
+    findall([X3, Y3], valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice), MoveList).
 
 

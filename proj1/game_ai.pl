@@ -22,8 +22,7 @@ game_loop(B, P, 2):-
       game_loop(B1, 2, 2)
     ; cpu_move(B, B1, 2),
       game_loop(B1, 1, 2)
-    ),
-    sleep(5).
+    ).
 
 cpu_move(Board, NewBoard, P):-
     valid_moves(Board, P, MoveList),
@@ -41,7 +40,7 @@ cpu_move(Board, NewBoard, P):-
 
 cpu_move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
     cell_with_ship(C2),
-    random(1, 3, RandomInt),
+    random(1, 3, RandomInt), % CASO REPROGRAM DÊ ZERO POSSIVEIS JGOADAS FAZER ROCKET BOOST
     cpu_chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, RandomInt).
 
 cpu_move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
@@ -50,8 +49,15 @@ cpu_move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
 
 cpu_chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 1,
+    valid_chain_moves(X1, Y1, X2, Y2, P, Board, MoveList, Choice),
+    length(MoveList, MoveListLenght),
+    MoveListLenght =:= 0,
+    cpu_chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, 2).
+
+cpu_chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
+    Choice =:= 1,
     write('CPU DID A REPOGRAM COORDINATES YEY'),
-    valid_chain_moves(X1, Y1, X2, Y2, Board, MoveList, Choice),
+    valid_chain_moves(X1, Y1, X2, Y2, P, Board, MoveList, Choice),
     length(MoveList, MoveListLenght),
     random(0, MoveListLenght, RandMove),
     nth0(RandMove, MoveList, Move),
@@ -68,7 +74,7 @@ cpu_chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
 cpu_chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 2,
     write('CPU DID A ROCKET BOOST YEY'),
-    valid_chain_moves(X1, Y1, X2, Y2, Board, MoveList, Choice),
+    valid_chain_moves(X1, Y1, X2, Y2, P, Board, MoveList, Choice),
     length(MoveList, MoveListLenght),
     random(0, MoveListLenght, RandMove),
     nth0(RandMove, MoveList, Move),
