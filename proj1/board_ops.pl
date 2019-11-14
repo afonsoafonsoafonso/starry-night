@@ -30,8 +30,8 @@ get_piece_coords(X1, Y1, Board, P):-
 * Get funtion to list containing all possible destinations with the current piece.
 * @param X, Y, P, B, MoveList
 */
-get_piece_possible_destinations(X, Y, B, MoveList):-
-    findall([X_dest, Y_dest], valid_move(X, Y, X_dest, Y_dest, B), MoveList).
+get_piece_possible_destinations(X, Y, P, B, MoveList):-
+    findall([X_dest, Y_dest], valid_move(X, Y, X_dest, Y_dest, P, B), MoveList).
 
 
 /*
@@ -54,11 +54,11 @@ get_destination_coords(X2, Y2):-
 */
 get_chain_move(Choise):-
     nl,
-    write('Chain Moves:'),
+    write(' > Select your desired chain action:'),
     nl,  
-    write('1: Re-program coordinates'),
+    write('   - 1: Re-program coordinates'),
     nl, 
-    write('2: Rocket Boost'),
+    write('   - 2: Rocket Boost'),
     nl, 
     read(Choise).
 
@@ -68,13 +68,9 @@ get_chain_move(Choise):-
 */
 get_chain_move_coords(X3, Y3):-
     nl,
-    write('Chain Coords:'),
-    nl,
-    write('X3:'),
+    write(' > Chain action destination [ X. ; Y. ]:'),
     nl,
     read(X3),
-    write('Y3:'),
-    nl,
     read(Y3).
 
 /*

@@ -53,12 +53,12 @@ end_game_B(B):-
 move(Board, NewBoard, P):-
     get_piece_coords(X1, Y1, Board, P),
     display_number_of_moves_allowed(X1, Y1, Board),
-    get_piece_possible_destinations(X1, Y1, Board, MoveList),
+    get_piece_possible_destinations(X1, Y1, P, Board, MoveList),
     display_piece_possible_destinations(MoveList),
     get_destination_coords(X2, Y2),
     get_cell(X1, Y1, Board, C1),
     get_cell(X2, Y2, Board, C2),
-    valid_move(X1, Y1, X2, Y2, C1, C2, Board),
+    valid_move(X1, Y1, X2, Y2, C1, C2, P, Board),
     move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard).
 
 move(Board, NewBoard, P):-
@@ -87,6 +87,9 @@ move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard):-
 /* Choice == 1 --> Repogram Coordinates */
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 1,
+    display_number_of_moves_allowed(X1, Y1, Board),
+    valid_chain_moves(X1, Y1, X2, Y2, Board, DestList, 1),
+    display_piece_possible_destinations(DestList),
     get_chain_move_coords(X3, Y3),
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
@@ -98,8 +101,8 @@ chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
 chain_move(X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice):-
     Choice =:= 2,
     display_number_of_moves_allowed(X2, Y2, Board),
-    get_piece_possible_destinations(X2, Y2, Board, DestinationList),
-    display_piece_possible_destinations(DestinationList),
+    valid_chain_moves(X1, Y1, X2, Y2, Board, DestList, 2),
+    display_piece_possible_destinations(DestList),
     get_chain_move_coords(X3, Y3),
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, Board, Choice),
@@ -157,24 +160,22 @@ home_row_check_B(X, B, P, I):-
     nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
     not(any_member([1,2,3], Row)).
 
-/*
-*
-*/
-valid_move(X1, Y1, X2, Y2, C1, C2, B):-
+valid_move(X1, Y1, X2, Y2, C1, C2, P, B):-
     cell_with_ship(C1),
+    home_row_check(X1, B, P),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1).
 
-valid_move(X1, Y1, X2, Y2, B):-
+valid_move(X1, Y1, X2, Y2, P, B):-
     get_cell(X1, Y1, B, C1),
     get_cell(X2, Y2, B, C2),
     cell_with_ship(C1),
+    home_row_check(X1, B, P),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1).
-
 /*
 *
 */
 valid_moves(B, P, MoveList):-
-    findall([X1, Y1, X2, Y2], valid_move(X1, Y1, X2, Y2, B), MoveList).
+    findall([X1, Y1, X2, Y2], valid_move(X1, Y1, X2, Y2, P, B), MoveList).
 
 /*
 *
