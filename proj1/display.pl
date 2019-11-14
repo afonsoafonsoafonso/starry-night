@@ -47,6 +47,7 @@ display_endBoard:-
 * @param B, P
 */
 display_game(B, P):-
+    nl,
     write('---------------------------------------------'),
     nl,
     nl,
@@ -101,6 +102,21 @@ display_cell(1):- write(' o ').
 display_cell(2):- write('-o-').
 display_cell(3):- write('|0|').
 
+write_turn(1):-
+    nl,
+    nl,
+    write( '---> TURN: '),
+    write('A'),
+    nl,
+    nl.
+
+write_turn(2):-
+    nl,
+    nl,
+    write( '---> TURN: '),
+    write('B'),
+    nl,
+    nl.
 /*
 * Displays possible destinations for the current piece.
 * @param MoveList

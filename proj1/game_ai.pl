@@ -7,7 +7,6 @@ game_loop(B, P, 1):-
     write('PLAYER B WON').
 
 game_loop(B, P, 1):-
-    write('aowidnawod'),
     display_game(B, P),
     ( P =:= 1 ->
       move(B, B1, P),

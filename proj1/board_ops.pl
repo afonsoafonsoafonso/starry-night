@@ -7,20 +7,20 @@ board_setup(B, P):-
 * @param X1, Y1
 */
 get_piece_coords(X1, Y1, Board, P):-
+    write_turn(P),
+    write(' > Select your ship [ X. ; Y. ]:'),
     nl,
-    write('Piece Coords:'),
-    nl,
-    write('X: \n'),
+    %write(' > X: \n'),
     read(X1),
-    nl,
-    write('Y: \n'),
+    %nl,
+    %write(' > Y: \n'),
     read(Y1),
     /* Verifies if the piece belong to the home row. */
     home_row_check(X1, Board, P).
 
 get_piece_coords(X1, Y1, Board, P):-
     nl,
-    write('Invalid Piece! Piece does not belong to your home row!'),
+    write(' !!! Invalid cell: you must select a non-empty cell from your home-row.'),
     nl,
     get_piece_coords(X1, Y1, Board, P).
     
@@ -39,12 +39,12 @@ get_piece_possible_destinations(X, Y, B, MoveList):-
 */  
 get_destination_coords(X2, Y2):-
     nl,
-    write('Destination Coords: '),
+    write(' > Select your destination (X.Y.):'),
     nl,
-    write('X: \n'),
+    %write(' > X: \n'),
     read(X2),
-    nl,
-    write('Y: \n'),
+    %nl,
+    %write(' > Y: \n'),
     read(Y2).
 
 /*

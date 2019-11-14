@@ -12,11 +12,6 @@ startBoard([
         [-2 , -2 , -2 , -2 , -2 , -2 ]
         ]).
 
-
-start_game:-
-    board_setup(B, P),
-    game_loop(B, P).
-
 /* 
 * Verifies game over.
 * Inicializes the display of the board and coordenates the players turns and moves. 
