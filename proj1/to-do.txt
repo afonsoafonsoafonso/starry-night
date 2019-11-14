@@ -4,6 +4,11 @@ IMPROVEMENTS
 
 - validação de input (robustez)
 
+REGRAS :
+- não pode passar por casas que têm naves, apenas aterrar nelas (é preciso implementar moves casa a casa)
+- repogram coordinates não pode ser com destino a base de um jogador
+- qualquer movimento fora da grelha interna 6x6 conta como apenas um (ou seja, 
+movimentos têm que se esgotar para vencer o jogo)
 
 
 FULL FLEDGE FEATURES
