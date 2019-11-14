@@ -11,7 +11,7 @@
 * Main.
 */
 play:-
-    game_over_menu(2).
+    menu.
     
 
     
