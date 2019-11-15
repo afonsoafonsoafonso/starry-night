@@ -19,12 +19,11 @@ startBoard([
 */
 game_loop(B, P):-
     end_game_A(B),
-    write('PLAYER A WON'),
-    gameover_menu(1).
+    game_over_menu(1).
 
 game_loop(B, P):-
     end_game_B(B),
-    gameover_menu(2).
+    game_over_menu(2).
 
 game_loop(B, P):-
     display_game(B, P), 
@@ -60,7 +59,7 @@ move(Board, NewBoard, P):-
     get_cell(X1, Y1, Board, C1),
     get_cell(X2, Y2, Board, C2),
     valid_move(X1, Y1, X2, Y2, C1, C2, P, Board),
-    move2(X1, Y1, X2, Y2, C1, C2, Board, NewBoard).
+    move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard).
 
 move(Board, NewBoard, P):-
     write('Invalid move!'),
