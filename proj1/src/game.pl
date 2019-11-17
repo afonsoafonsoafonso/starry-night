@@ -83,7 +83,6 @@ move(Board, NewBoard, P):-
     display_destination_coords_instructions(1),
     BackTrackingList = [],
     get_destination_coords(0, X1, Y1, X2, Y2, Board, P, C1, BackTrackingList, BackTrackingList_new),
-    nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X2, Y2, Board, C2),
     valid_move(X1, Y1, X2, Y2, C1, C2, P, Board),
     move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList_new).
@@ -119,7 +118,6 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
     display_piece_possible_destinations(DestList),
     display_destination_coords_instructions(1),
     get_destination_coords(1, X2, Y2, X3, Y3, Board, P, C2, BackTrackingList, BackTrackingList_new),
-    nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
     change_cell(X1, Y1, Board, AuxBoard, C3),
@@ -134,7 +132,6 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
     display_piece_possible_destinations(DestList),
     display_destination_coords_instructions(1),
     get_destination_coords(1, X2, Y2, X3, Y3, Board, P, C2, BackTrackingList, BackTrackingList_new),
-    nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
     chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice, BackTrackingList_new).
