@@ -143,16 +143,7 @@ write_turn(2):-
     write('B'),
     nl,
     nl.
-/*
-* Displays possible destinations for the current piece.
-* @param MoveList
-*/
-display_piece_possible_destinations(MoveList):-
-    nl,
-    write(' - Possible destinations: '),
-    %nl, 
-    write(MoveList),
-    nl.
+
 
 /*
 * Displays number of moves allowed for the piece.
@@ -164,12 +155,9 @@ display_number_of_moves_allowed(X, Y, Board):-
     write(' - Number of moves allowed: '),
     write(CellValue).
 
-% TO-DO:
-%   - display tabuleiro + flexível
-
 display_destination_coords_instructions(1):-
     nl,
-    write(' > Possible moves: 1:Up, 2:Down, 3:left, 4:right'),
+    write(' > Possible moves - 1:Up, 2: Down, 3: Left, 4: Right'),
     nl,
     write(' > Select your move: '),
     nl.

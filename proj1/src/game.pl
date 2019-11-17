@@ -13,9 +13,14 @@ startBoard([
         ]).
 
 /* 
-* Verifies game over.
-* Inicializes the display of the board and coordenates the players turns and moves. 
-* @param B, P
+* Predicados responsáveis pelas iterações do jogo ao longo do mesmo. Primeiro é verificado
+* se o jogo já acabou (algum nave já aterrou em alguma base), caso nao tenha acabado,
+* é feito o display do tabuleiro, a quem pertence o turno e é chamado o predicado
+* responsável pela jogada do jogador em questão. De seguida, recurssivamente, é passado
+* o turno ao outro jogador
+* @params:
+*   - B: board
+*   - P: jogador
 */
 game_loop(B, _):-
     game_over(B).
@@ -31,6 +36,13 @@ game_loop(B, P):-
     ; game_loop(B1, 1) 
     ).
 
+/*
+* Predicado chamado para verificar se algum jogador venceu o jogo. Caso tenha acontecido,
+* por sua vez, é chamado o predicado responsável pelo menu de game over consoante o jogador
+* que tenha vencido a partida
+* @params:
+*   - B: board
+*/
 game_over(B):-
     end_game_A(B),
     game_over_menu(1).
@@ -40,27 +52,33 @@ game_over(B):-
     game_over_menu(2).
 
 /*
-* Verifies if any ship as landed in any of the two bases.
-* @param B
+* Predicados responsáveis pela lógica concreta da verificação da vitória do jogador A.
+* Com auxílio de outro predicado, obtém a linha da base do jogador B e verifica se 
+* alguma nave conseguiu lá chegar (1, 2 e 3 são as representações internas das naves), ou seja,
+* se algum valor da lista é o valor representativo de alguma nave
+* @params:
+*   - B: board
 */
 end_game_A(B):-
     get_B_base_row(B, BRow),
     any_member([1,2,3], BRow).
-
+/*
+* Idem mas no que toca à vitória do jogador B 
+*/
 end_game_B(B):-
     get_A_base_row(B, BRow),
     any_member([1,2,3], BRow).
 
 /*
-* Moves the chosen piece to the chosen destination.
-* If piece or destination not valid, asks again for the coords.
-* @param X1, Y1, X2, Y2, Board, NewBoard
+* Predicado responsável por efetuar uma jogada do jogador em questão. Inicialmente, chama um predicado que
+* pede ao jogador as coordenadas da peça a mexer. De seguida, consoante o nível da nave que escolheu,
+* é dito ao jogador na interface o número de movimentos que pode fazer assim como os 
+* @params:
+*   - B: board
 */
 move(Board, NewBoard, P):-
     get_piece_coords(X1, Y1, Board, P),
     display_number_of_moves_allowed(X1, Y1, Board),
-    get_piece_possible_destinations(X1, Y1, P, Board, MoveList),
-    display_piece_possible_destinations(MoveList),
     get_cell(X1, Y1, Board, C1),
     display_destination_coords_instructions(1),
     BackTrackingList = [],
