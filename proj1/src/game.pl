@@ -55,11 +55,14 @@ move(Board, NewBoard, P):-
     display_number_of_moves_allowed(X1, Y1, Board),
     get_piece_possible_destinations(X1, Y1, P, Board, MoveList),
     display_piece_possible_destinations(MoveList),
-    get_destination_coords(X2, Y2),
     get_cell(X1, Y1, Board, C1),
+    display_destination_coords_instructions(1),
+    BackTrackingList = [],
+    get_destination_coords(X1, Y1, X2, Y2, Board, C1, BackTrackingList, BackTrackingList_new),
+    nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X2, Y2, Board, C2),
     valid_move(X1, Y1, X2, Y2, C1, C2, P, Board),
-    move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard).
+    move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList_new).
 
 move(Board, NewBoard, P):-
     write('Invalid move!'),
@@ -70,12 +73,13 @@ move(Board, NewBoard, P):-
 *
 * @param X1, Y1, X2, Y2, C1, C2, Board, NewBoard
 */
-move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard):-
+move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
     cell_with_ship(C2),
     get_chain_move(Choice),
-    chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice).
+    %display_game(Board, P),
+    chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList).
 
-move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard):-
+move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
     change_cell(X1, Y1, Board, AuxBoard, C2),
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
 
@@ -85,12 +89,14 @@ move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard):-
 */
 % falta verificar se posição final do reprogram não é nenhuma base
 /* Choice == 1 --> Repogram Coordinates */
-chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
+chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList):-
     Choice =:= 1,
     display_number_of_moves_allowed(X1, Y1, Board),
     valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 1),
     display_piece_possible_destinations(DestList),
-    get_chain_move_coords(X3, Y3),
+    display_destination_coords_instructions(1),
+    get_destination_coords(X2, Y2, X3, Y3, Board, C2, BackTrackingList, BackTrackingList_new),
+    nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
     change_cell(X1, Y1, Board, AuxBoard, C3),
@@ -98,31 +104,33 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
     change_cell(X3, Y3, AuxBoard2, NewBoard, C2).
 
 /* Choice == 2 --> Rocket Boost */
-chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
+chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList):-
     Choice =:= 2,
     display_number_of_moves_allowed(X2, Y2, Board),
     valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 2),
     display_piece_possible_destinations(DestList),
-    get_chain_move_coords(X3, Y3),
+    display_destination_coords_instructions(1),
+    get_destination_coords(X2, Y2, X3, Y3, Board, C2, BackTrackingList, BackTrackingList_new),
+    nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
-    chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice).
+    chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice, BackTrackingList_new).
 
-chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
-   chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice).
+chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList):-
+   chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList).
 
-chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice):-
+chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice, BackTrackingList):-
     Choice =:= 2,
     X1 =:= X3,
     Y1 =:= Y3,
     change_cell(X1, Y1, Board, NewBoard, C1).   
 
-chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice):-
+chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice, BackTrackingList):-
     Choice =:= 2,
     ( not(cell_with_ship(C3)) ->
       change_cell(X1, Y1, Board, AuxBoard, C3),
       change_cell(X3, Y3, AuxBoard, NewBoard, C1)
-    ; move2(X1, Y1, X3, Y3, C1, C3, P, Board, NewBoard)  
+    ; move2(X1, Y1, X3, Y3, C1, C3, P, Board, NewBoard, BackTrackingList)  
     ).
 
 /*

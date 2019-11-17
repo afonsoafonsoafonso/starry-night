@@ -167,5 +167,10 @@ display_number_of_moves_allowed(X, Y, Board):-
 % TO-DO:
 %   - display tabuleiro + flexível
 
-    
+display_destination_coords_instructions(1):-
+    nl,
+    write(' > Possible moves: 1:Up, 2:Down, 3:left, 4:right'),
+    nl,
+    write(' > Select your move: '),
+    nl.  
 
