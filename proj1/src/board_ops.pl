@@ -42,7 +42,7 @@ get_piece_possible_destinations(X, Y, P, B, MoveList):-
 */
 
 /* CellValue = 1 */
-get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackTrackingList_new):-
+get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, BackTrackingList, BackTrackingList_new):-
     CellValue =:= 1,
     /* Iteration 1 */
     user_input(Move1, 1, 4),
@@ -51,10 +51,10 @@ get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackT
     Y2 is Y1+Y3,
     validate_increment_move(X2, Y2),
     validate_BackTracking_list(BackTrackingList, X1, Y1, X2, Y2),
-    append(BackTrackingList, [X1, Y1, X2, Y2], BackTrackingList_new).
+    append(BackTrackingList, [[X1, Y1, X2, Y2]], BackTrackingList_new).
     
 /* CellValue = 2 */
-get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackTrackingList_new):-
+get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, BackTrackingList, BackTrackingList_new):-
     CellValue =:= 2,
     /* Iteration 1 */
     user_input(Move1, 1, 4),
@@ -62,12 +62,13 @@ get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackT
     X4 is X1+X3,
     Y4 is Y1+Y3,
     validate_increment_move(X4, Y4),
-    get_cell(X4, Y4, Board, C1),
-    C1 =< 0,
+    get_cell(X4, Y4, Board, C4),
+    C4 =< 0,
     validate_BackTracking_list(BackTrackingList, X1, Y1, X4, Y4),
-    append(BackTrackingList, [X1, Y1, X4, Y4], BackTrackingList_aux1),
+    append(BackTrackingList, [[X1, Y1, X4, Y4]], BackTrackingList_aux1),
+    display_increment_move(Chain_move, X1, Y1, X4, Y4, Board, Player),
     /* Iteration 2 */
-    write(' > Moves left: 1. Select your move: '), nl,
+    nl, nl, write(' > Moves left: 1. Select your move: '), nl,
     user_input(Move2, 1, 4),
     increment_move(X5, Y5, Move2),
     X2 is X4+X5,
@@ -77,7 +78,7 @@ get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackT
     append(BackTrackingList_aux1, [[X4, Y4, X2, Y2]], BackTrackingList_new).
 
 /* CellValue = 3 */
-get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackTrackingList_new):-
+get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, BackTrackingList, BackTrackingList_new):-
     CellValue =:= 3,
     /* Iteration 1 */
     user_input(Move1, 1, 4),
@@ -89,8 +90,9 @@ get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackT
     C1 =< 0,
     validate_BackTracking_list(BackTrackingList, X1, Y1, X4, Y4),
     append(BackTrackingList, [[X1, Y1, X4, Y4]], BackTrackingList_aux1),
+    display_increment_move(Chain_move, X1, Y1, X4, Y4, Board, Player),
     /* Iteration 2 */
-    write(' > Moves left: 2. Select your move: '), nl,
+    nl, nl, write(' > Moves left: 2. Select your move: '), nl,
     user_input(Move2, 1, 4),
     increment_move(X5, Y5, Move2),
     X6 is X4+X5,
@@ -100,8 +102,9 @@ get_destination_coords(X1, Y1, X2, Y2, Board, CellValue, BackTrackingList, BackT
     C2 =< 0,
     validate_BackTracking_list(BackTrackingList, X4, Y4, X6, Y6),
     append(BackTrackingList_aux1, [[X4, Y4, X6, Y6]], BackTrackingList_aux2),
+    display_increment_move(Chain_move, X1, Y1, X6, Y6, Board, Player),
     /* Iteration 3 */
-    write(' > Moves left: 1. Select your move: '), nl,
+    nl, nl, write(' > Moves left: 1. Select your move: '), nl,
     user_input(Move3, 1, 4),
     increment_move(X7, Y7, Move3),
     X2 is X6+X7,

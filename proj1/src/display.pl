@@ -172,5 +172,19 @@ display_destination_coords_instructions(1):-
     write(' > Possible moves: 1:Up, 2:Down, 3:left, 4:right'),
     nl,
     write(' > Select your move: '),
-    nl.  
+    nl.
+
+display_increment_move(Chain_move, X1, Y1, X2, Y2, Board, Player):-
+    Chain_move =:= 0,
+    get_cell(X1, Y1, Board, C1),
+    change_cell(X1, Y1, Board, AuxBoard, 0),
+    change_cell(X2, Y2, AuxBoard, AuxBoard2, C1),
+    display_game(AuxBoard2, Player).
+
+display_increment_move(Chain_move, X1, Y1, X2, Y2, Board, Player):-
+    Chain_move =:= 1,
+    get_cell(X1, Y1, Board, C1),
+    change_cell(X1, Y1, Board, AuxBoard, C1),
+    change_cell(X2, Y2, AuxBoard, AuxBoard2, C1),
+    display_game(AuxBoard2, Player).  
 

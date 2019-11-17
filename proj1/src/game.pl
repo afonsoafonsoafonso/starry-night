@@ -58,7 +58,7 @@ move(Board, NewBoard, P):-
     get_cell(X1, Y1, Board, C1),
     display_destination_coords_instructions(1),
     BackTrackingList = [],
-    get_destination_coords(X1, Y1, X2, Y2, Board, C1, BackTrackingList, BackTrackingList_new),
+    get_destination_coords(0, X1, Y1, X2, Y2, Board, P, C1, BackTrackingList, BackTrackingList_new),
     nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X2, Y2, Board, C2),
     valid_move(X1, Y1, X2, Y2, C1, C2, P, Board),
@@ -76,7 +76,6 @@ move(Board, NewBoard, P):-
 move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
     cell_with_ship(C2),
     get_chain_move(Choice),
-    %display_game(Board, P),
     chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList).
 
 move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
@@ -95,7 +94,7 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
     valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 1),
     display_piece_possible_destinations(DestList),
     display_destination_coords_instructions(1),
-    get_destination_coords(X2, Y2, X3, Y3, Board, C2, BackTrackingList, BackTrackingList_new),
+    get_destination_coords(1, X2, Y2, X3, Y3, Board, P, C2, BackTrackingList, BackTrackingList_new),
     nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
@@ -110,7 +109,7 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
     valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 2),
     display_piece_possible_destinations(DestList),
     display_destination_coords_instructions(1),
-    get_destination_coords(X2, Y2, X3, Y3, Board, C2, BackTrackingList, BackTrackingList_new),
+    get_destination_coords(1, X2, Y2, X3, Y3, Board, P, C2, BackTrackingList, BackTrackingList_new),
     nl, write(' > BackTrackingList: '), write(BackTrackingList_new), nl,
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
