@@ -11,10 +11,10 @@ get_piece_coords(X1, Y1, Board, P):-
     write(' > Select your ship [ X. ; Y. ]:'),
     nl,
     %write(' > X: \n'),
-    read(X1),
+    user_input(X1, 0, 7),
     %nl,
     %write(' > Y: \n'),
-    read(Y1),
+    user_input(Y1, 0, 5),
     /* Verifies if the piece belong to the home row. */
     get_cell(X1, Y1, Board, C1),
     cell_with_ship(C1),
@@ -44,10 +44,10 @@ get_destination_coords(X2, Y2):-
     write(' > Select your destination [ X. ; Y.]:'),
     nl,
     %write(' > X: \n'),
-    read(X2),
+    user_input(X2, 0, 7),
     %nl,
     %write(' > Y: \n'),
-    read(Y2).
+    user_input(Y2, 0, 5).
 
 /*
 * Get funtion for chain move choise.
@@ -61,7 +61,7 @@ get_chain_move(Choise):-
     nl, 
     write('   - 2: Rocket Boost'),
     nl, 
-    read(Choise).
+    user_input(Choise, 1, 2).
 
 /*
 * Reads chain coords for the Re-program coordinates or Rocket Boost. 
@@ -71,8 +71,8 @@ get_chain_move_coords(X3, Y3):-
     nl,
     write(' > Chain action destination [ X. ; Y. ]:'),
     nl,
-    read(X3),
-    read(Y3).
+    user_input(X3, 0, 7),
+    user_input(Y3, 0, 5).
 
 /*
 * Parses the value in the current board to 'CellValue'

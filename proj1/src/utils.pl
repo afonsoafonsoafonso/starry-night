@@ -16,3 +16,15 @@ unpack_move_list(List, X1, Y1, X2, Y2):-
 unpack_chain_move_list(List, X3, Y3):-
     nth0(0, List, X3),
     nth0(1, List, Y3).
+
+user_input(Input, Min, Max):-
+    catch(read(Input),_Err,fail),
+    integer(Input),
+    between(Min, Max, Input).
+  
+user_input(Input, Min, Max):-
+    nl,
+    write('Invalid Input. Retry:'),
+    nl,
+    nl,
+    user_input(Input, Min, Max).

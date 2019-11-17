@@ -2,7 +2,7 @@ menu:-
     display_menu,
     write(' > Choose your option: '),
     nl,
-    read(Option),
+    user_input(Option, 1, 4),
     process_menu_input(Option).
 
 process_menu_input(1):-
@@ -60,7 +60,7 @@ game_over_menu(P):-
     display_gameover_screen(P),
     write(' > Choose your option: '),
     nl,
-    read(Option),
+    user_input(Option, 1, 2),
     process_gameover_input(Option).
 
 process_gameover_input(1):-
