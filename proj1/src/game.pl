@@ -72,7 +72,7 @@ end_game_B(B):-
 /*
 * Predicado responsável por efetuar uma jogada do jogador em questão. Inicialmente, chama um predicado que
 * pede ao jogador as coordenadas da peça a mexer. De seguida, consoante o nível da nave que escolheu,
-* é dito ao jogador na interface o número de movimentos que pode fazer assim como os 
+* é dito ao jogador na interface o número de movimentos que pode fazer assim como 
 * @params:
 *   - B: board
 */
@@ -80,7 +80,6 @@ move(Board, NewBoard, P):-
     get_piece_coords(X1, Y1, Board, P),
     display_number_of_moves_allowed(X1, Y1, Board),
     get_cell(X1, Y1, Board, C1),
-    display_destination_coords_instructions(1),
     BackTrackingList = [],
     get_destination_coords(0, X1, Y1, X2, Y2, Board, P, C1, BackTrackingList, BackTrackingList_new),
     get_cell(X2, Y2, Board, C2),
@@ -128,7 +127,6 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
     Choice =:= 2,
     display_number_of_moves_allowed(X2, Y2, Board),
     valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 2),
-    display_destination_coords_instructions(1),
     get_destination_coords(1, X2, Y2, X3, Y3, Board, P, C2, BackTrackingList, BackTrackingList_new),
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),

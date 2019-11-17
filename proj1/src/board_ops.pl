@@ -44,6 +44,7 @@ get_piece_possible_destinations(X, Y, P, B, MoveList):-
 /* CellValue = 1 */
 get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, BackTrackingList, BackTrackingList_new):-
     CellValue =:= 1,
+    display_destination_coords_instructions(1),
     /* Iteration 1 */
     user_input(Move1, 1, 4),
     increment_move(X3, Y3, Move1),
@@ -56,6 +57,7 @@ get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, Bac
 /* CellValue = 2 */
 get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, BackTrackingList, BackTrackingList_new):-
     CellValue =:= 2,
+    display_destination_coords_instructions(1),
     /* Iteration 1 */
     user_input(Move1, 1, 4),
     increment_move(X3, Y3, Move1),
@@ -80,6 +82,7 @@ get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, Bac
 /* CellValue = 3 */
 get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, BackTrackingList, BackTrackingList_new):-
     CellValue =:= 3,
+    display_destination_coords_instructions(1),
     /* Iteration 1 */
     user_input(Move1, 1, 4),
     increment_move(X3, Y3, Move1),
