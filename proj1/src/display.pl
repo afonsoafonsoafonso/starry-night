@@ -144,6 +144,12 @@ write_turn(2):-
     nl,
     nl.
 
+display_piece_possible_destinations(MoveList):-
+    nl,
+    write(' - Possible destinations: '),
+    %nl, 
+    write(MoveList),
+    nl.
 
 /*
 * Displays number of moves allowed for the piece.

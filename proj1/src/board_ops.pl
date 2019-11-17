@@ -113,6 +113,16 @@ get_destination_coords(Chain_move, X1, Y1, X2, Y2, Board, Player, CellValue, Bac
     validate_BackTracking_list(BackTrackingList, X6, Y6, X2, Y2),
     append(BackTrackingList_aux2, [[X6, Y6, X2, Y2]], BackTrackingList_new).
 
+get_destination_coords(X2, Y2):-
+    nl,
+    write(' > Select your destination [ X. ; Y.]:'),
+    nl,
+    %write(' > X: \n'),
+    user_input(X2, 0, 7),
+    %nl,
+    %write(' > Y: \n'),
+    user_input(Y2, 0, 5).
+
 /* UP */
 increment_move(X, Y, Move):-
     Move =:= 1,
@@ -161,6 +171,13 @@ get_chain_move(Choise):-
     write('   - 2: Rocket Boost'),
     nl, 
     user_input(Choise, 1, 2).
+
+get_chain_move_coords(X3, Y3):-
+    nl,
+    write(' > Chain action destination [ X. ; Y. ]:'),
+    nl,
+    user_input(X3, 0, 7),
+    user_input(Y3, 0, 5).
 
 /*
 * Parses the value in the current board to 'CellValue'
