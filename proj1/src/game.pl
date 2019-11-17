@@ -18,12 +18,10 @@ startBoard([
 * @param B, P
 */
 game_loop(B, _):-
-    end_game_A(B),
-    game_over_menu(1).
+    game_over(B).
 
 game_loop(B, _):-
-    end_game_B(B),
-    game_over_menu(2).
+    game_over(B).
 
 game_loop(B, P):-
     display_game(B, P), 
@@ -32,6 +30,14 @@ game_loop(B, P):-
     ( P =:= 1 -> game_loop(B1, 2) 
     ; game_loop(B1, 1) 
     ).
+
+game_over(B):-
+    end_game_A(B),
+    game_over_menu(1).
+
+game_over(B):-
+    end_game_B(B),
+    game_over_menu(2).
 
 /*
 * Verifies if any ship as landed in any of the two bases.
