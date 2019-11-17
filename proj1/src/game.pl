@@ -17,11 +17,11 @@ startBoard([
 * Inicializes the display of the board and coordenates the players turns and moves. 
 * @param B, P
 */
-game_loop(B, P):-
+game_loop(B, _):-
     end_game_A(B),
     game_over_menu(1).
 
-game_loop(B, P):-
+game_loop(B, _):-
     end_game_B(B),
     game_over_menu(2).
 
@@ -78,7 +78,7 @@ move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
     get_chain_move(Choice),
     chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList).
 
-move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
+move2(X1, Y1, X2, Y2, C1, C2, _, Board, NewBoard, _):-
     change_cell(X1, Y1, Board, AuxBoard, C2),
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
 
@@ -118,13 +118,13 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
 chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList):-
    chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList).
 
-chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice, BackTrackingList):-
+chain_move2(X1, Y1, _, _, X3, Y3, C1, _, _, _, Board, NewBoard, Choice, _):-
     Choice =:= 2,
     X1 =:= X3,
     Y1 =:= Y3,
     change_cell(X1, Y1, Board, NewBoard, C1).   
 
-chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice, BackTrackingList):-
+chain_move2(X1, Y1, _, _, X3, Y3, C1, _, C3, P, Board, NewBoard, Choice, BackTrackingList):-
     Choice =:= 2,
     ( not(cell_with_ship(C3)) ->
       change_cell(X1, Y1, Board, AuxBoard, C3),
@@ -158,7 +158,7 @@ home_row_check_A(X, B, P, I):-
     I1 is I+1,
     home_row_check_A(X, B, P, I1).
 
-home_row_check_A(X, B, P, I):-
+home_row_check_A(X, B, _, I):-
     not(I<X),
     I1 is I-1,
     nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
@@ -171,13 +171,13 @@ home_row_check_B(X, B, P, I):-
     I1 is I-1,
     home_row_check_B(X, B, P, I1).
 
-home_row_check_B(X, B, P, I):-
+home_row_check_B(X, B, _, I):-
     not(I>X),
     I1 is I+1,
     nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
     not(any_member([1,2,3], Row)).
 
-valid_move(X1, Y1, X2, Y2, C1, C2, P, B):-
+valid_move(X1, Y1, X2, Y2, C1, _, P, B):-
     cell_with_ship(C1),
     home_row_check(X1, B, P),
     dest_cell_in_reach(X1, Y1, X2, Y2, C1),
@@ -185,7 +185,6 @@ valid_move(X1, Y1, X2, Y2, C1, C2, P, B):-
 
 valid_move(X1, Y1, X2, Y2, P, B):-
     get_cell(X1, Y1, B, C1),
-    get_cell(X2, Y2, B, C2),
     cell_with_ship(C1),
     home_row_check(X1, B, P),
     not(is_base(X2, P)),
@@ -200,7 +199,7 @@ valid_moves(B, P, MoveList):-
 /*
 *
 */
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
+valid_chain_move(X1, Y1, X2, Y2, X3, Y3, _, B, Choice):-
     Choice =:= 1,
     get_cell(X1, Y1, B, C1),
     get_cell(X3, Y3, B, C3),
@@ -209,24 +208,23 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
     not(is_base(X3, 1)),
     not(is_base(X3, 2)).
 
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
+valid_chain_move(_, _, X2, Y2, X3, Y3, P, B, Choice):-
     Choice =:= 2,
     get_cell(X2, Y2, B, C2),
-    get_cell(X3, Y3, B, C3),
     dest_cell_in_reach(X2, Y2, X3, Y3, C2),
     not(is_base(X3, P)). 
 
 /*
 *
 */
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
+valid_chain_move(_, _, X2, Y2, X3, Y3, C1, _, C3, _, _, Choice):-
     Choice =:= 1,
     dest_cell_in_reach(X2, Y2, X3, Y3, C1),
     not(cell_with_ship(C3)),
     not(is_base(X3, 1)),
     not(is_base(X3, 2)).
 
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
+valid_chain_move(_, _, X2, Y2, X3, Y3, _, C2, _, P, _, Choice):-
     Choice =:= 2,
     dest_cell_in_reach(X2, Y2, X3, Y3, C2),
     not(is_base(X3, P)).
