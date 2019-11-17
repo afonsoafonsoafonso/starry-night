@@ -106,14 +106,24 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
     get_chain_move_coords(X3, Y3),
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
+    chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice).
+
+chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
+   chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice).
+
+chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice):-
+    Choice =:= 2,
+    X1 =:= X3,
+    Y1 =:= Y3,
+    change_cell(X1, Y1, Board, NewBoard, C1).   
+
+chain_move2(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, NewBoard, Choice):-
+    Choice =:= 2,
     ( not(cell_with_ship(C3)) ->
       change_cell(X1, Y1, Board, AuxBoard, C3),
       change_cell(X3, Y3, AuxBoard, NewBoard, C1)
     ; move2(X1, Y1, X3, Y3, C1, C3, P, Board, NewBoard)  
     ).
-
-chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
-   chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice). 
 
 /*
 * Verifies if the destination cell chosen can be reached with the current ship.
