@@ -1,13 +1,14 @@
 game_loop(B, P, _):-
     end_game_A(B),
-    write('PLAYER A WON').
+    game_over_menu(1).
 
 game_loop(B, P, _):-
     end_game_B(B),
-    write('PLAYER B WON').
+    game_over_menu(2).
 
-game_loop(B, P, 1):-
+game_loop(B, P, 1):- 
     display_game(B, P),
+    nl,
     ( P =:= 1 ->
       move(B, B1, P),
       game_loop(B1, 2, 1)
@@ -29,6 +30,7 @@ cpu_move(Board, NewBoard, P):-
     length(MoveList, MoveListLenght),
     random(0, MoveListLenght, RandMove),
     nth0(RandMove, MoveList, Move),
+    nl,
     nl,
     write('CPU MOVE: '),
     print(Move),
