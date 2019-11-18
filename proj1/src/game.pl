@@ -236,6 +236,7 @@ home_row_check_A(X, B, P, I):-
 
 /*
 * Semelhante ao predicado home_row_check_A, mas aplica-se para o jogador B. Mesmo algoritmo, sendo a única diferença
+* que o counter (I) começa na última linha, sendo que verifica as homerows de baixo para cima até chegar a X.
 */
 home_row_check_B(X, B, P, I):-
     I>X,
@@ -247,9 +248,25 @@ home_row_check_B(X, B, P, I):-
 home_row_check_B(X, B, P, I):-
     not(I>X),
     I1 is I+1,
-    nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
+    nth0(I1, B, Row),
     not(any_member([1,2,3], Row)).
 
+/*
+* Predicado que verifica se um move inicial é válido. Verifica se a célula escolhida como incial contém uma nave,
+* verifica se esta pertence à homerow do jogador, confirma que a nave tem nível suficiente para chegar à casa destino
+* e verifica também se a casa destino não é a base do próprio jogador, de forma a impedir que se perca de propósito.
+* Única diferença entre os dois predicados é o cálculo, ou não, dos valores das casas. Isto pois este predicado é usado
+* em outros predicados cujo valor destas casas já é calculado, sendo mais eficiente re-utilizar os valores.
+* @params:
+*   - X1: Abcissa da casa inicial da nave
+    - Y1: Ordenada da casa inicial da nave
+    - X2: Abcissa da casa destino da nave
+    - Y2: Ordenada da casa destino da nave
+    - C1: Valor da casa inicial da nave
+    - C2: Valor da casa destino da nave
+    - P: jogador
+    - B: tabuleiro
+*/
 valid_move(X1, Y1, X2, Y2, C1, C2, P, B):-
     cell_with_ship(C1),
     home_row_check(X1, B, P),
@@ -265,13 +282,32 @@ valid_move(X1, Y1, X2, Y2, P, B):-
     dest_cell_in_reach(X1, Y1, X2, Y2, C1).
 
 /*
-*
+* Predicado que calcula todos os possíveis movimentos válidos de um certo jogador.
+* @params:
+    - B: tabuleiro
+    - P: jogador
+    - MoveList: lista com as combinações casas inicio-destino válidos para o jogador P
 */
 valid_moves(B, P, MoveList):-
     findall([X1, Y1, X2, Y2], valid_move(X1, Y1, X2, Y2, P, B), MoveList).
 
 /*
-*
+* Predicado que verifica se um encadeamento, tendo em conta a célula inicial, intermédia e final, é válido
+* ou não. Caso choice==1, ou seja, o jogador ter escolhido um reprogram coordinates. Neste caso, verifica
+* se a célula final está alcancável tendo em conta o valor da nave escolhida e, depois, confirmma também
+* que a nave cujas coordenadas estão a ser reprogramadas não aterra nem numa casa com outra nave num em
+* uma base, seja do próprio jogador seja do adversário. Novamente, um predicado com os valores das casas
+* já calculados e outro não em prol de eficiência.
+* @params:
+*   - X1: Abcissa da casa inicial da nave
+    - Y1: Ordenada da casa inicial da nave
+    - X2: Abcissa da casa intermédia da nave (onde começou o chain move)
+    - Y2: Ordenada da casa intermédia da nave (onde começou o chain move)
+    - C1: Valor da casa inicial da nave (nível da nave escolhida)
+    - C2: Valor da casa destino da nave (nível da nave onde se aterreu da primeira vez)
+    - P: jogador
+    - B: tabuleiro
+    - Choice: chain action escolhida pelo jogador
 */
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
     Choice =:= 1,
@@ -282,22 +318,23 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
     not(is_base(X3, 1)),
     not(is_base(X3, 2)).
 
-valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
-    Choice =:= 2,
-    get_cell(X2, Y2, B, C2),
-    get_cell(X3, Y3, B, C3),
-    dest_cell_in_reach(X2, Y2, X3, Y3, C2),
-    not(is_base(X3, P)). 
-
-/*
-*
-*/
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
     Choice =:= 1,
     dest_cell_in_reach(X2, Y2, X3, Y3, C1),
     not(cell_with_ship(C3)),
     not(is_base(X3, 1)),
     not(is_base(X3, 2)).
+
+/*
+* Com o mesmo intuito dos dois predicados anteriores, mas referente ao rocket boost.
+* Verifica se a célula destino é alcancável tendo em conta
+*/
+valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
+    Choice =:= 2,
+    get_cell(X2, Y2, B, C2),
+    get_cell(X3, Y3, B, C3),
+    dest_cell_in_reach(X2, Y2, X3, Y3, C2),
+    not(is_base(X3, P)). 
 
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
     Choice =:= 2,
