@@ -72,9 +72,16 @@ end_game_B(B):-
 /*
 * Predicado responsável por efetuar uma jogada do jogador em questão. Inicialmente, chama um predicado que
 * pede ao jogador as coordenadas da peça a mexer. De seguida, consoante o nível da nave que escolheu,
-* é dito ao jogador na interface o número de movimentos que pode fazer assim como 
+* é dito ao jogador na interface o número de movimentos que pode fazer. Depois chama-se o predicado onde
+* o jogador realiza, de facto, o seu movimento desejado. No entanto, antes, é inicializado a lista onde se
+* guardará todos os movimentos a realizar pelo jogador de forma a impedir o mesmo de fazer backtracking durante
+* o seu turno. Depois disto, é verifiado se o movimento é válido e, caso seja, avança-se para a segunda parte do move 
+* (onde ocorre, ou não, o encadeamento de de jogadas). Caso o move falhe, por o movimento ser inválido, 
+* é apresentada uma mensagem no ecrã e pede-se novamente um movimento ao jogador
 * @params:
-*   - B: board
+*   - Board: tabuleiro
+*   - NewBoard: novo tabuleiro (tabuleiro pós turno)
+*   - P: jogador
 */
 move(Board, NewBoard, P):-
     get_piece_coords(X1, Y1, Board, P),
@@ -92,8 +99,21 @@ move(Board, NewBoard, P):-
     move(Board, NewBoard, P).
 
 /*
-*
-* @param X1, Y1, X2, Y2, C1, C2, Board, NewBoard
+* Segunda parte do movimento do jogador. No primeiro predicado move2, é verificado se a célula destino da nave
+* já la contém uma nave. Caso contenha, o utilizador terá que realizar um dos dois possíveis encadeamentos, sendo
+* que é pedida a escolha ao jogador. De seguida, chama-se o predicado chain_move que leverá então a cabo o encadeamento
+* escolhido. Caso o destino não tenha uma nave, a nave aterra na respetiva casa e é actualizado o tabuleiro.
+* @params:
+*   - X1: Abcissa da casa inicial da nave
+    - Y1: Ordenada da casa inicial da nave
+    - X2: Abcissa da casa destino da nave
+    - Y2: Ordenada da casa destino da nave
+    - C1: Valor na casa inicial da nave (~ nível da nave escolhida pelo jogador)
+    - C2: Valor na casa final da nave
+    - P: jogador
+    - Board: tabuleiro atual
+    - NewBoard: novo tabuleiro (tabuleiro pós turno)
+    - BackTrackingList: lista com movimentos realizados pelo jogador
 */
 move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
     cell_with_ship(C2),
@@ -105,11 +125,24 @@ move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, BackTrackingList):-
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
 
 /*
-*
-* @param X1, Y1, X2, Y2, C1, C2, Board, NewBoard, Choice
+* Se o jogador escolheu a opção 1 na interface, quando requisitado input do mesmo no que toca ao
+* encadeamento a realizar, o jogador decidiu então realizar um re-program coordinates. É então
+* mostrado ao jogador o número de casas a mexer assim como os possíveis destinos finais. Depois é
+* chamado um predicado de forma a pedir ao utilizador o destino final, sendo este verificado com o
+* predicado valid_chain_move. Caso seja válido, é actualizado o novo tabuleiro. Caso não seja, este predicado
+* falha e é repetido o processo até o utilizador escolher um destino válido.
+* @params:
+*   - X1: Abcissa da casa inicial da nave
+    - Y1: Ordenada da casa inicial da nave
+    - X2: Abcissa da casa destino (antes do chain move) da nave
+    - Y2: Ordenada da casa destino (antes do chain move) da nave
+    - C1: Valor na casa inicial da nave (~ nível da nave escolhida pelo jogador)
+    - C2: Valor na casa destino (antes do chain move) da nave 
+    - P: jogador
+    - Board: tabuleiro atual
+    - NewBoard: novo tabuleiro (tabuleiro pós turno)
+    - BackTrackingList: lista com movimentos realizados pelo jogador
 */
-% falta verificar se posição final do reprogram não é nenhuma base
-/* Choice == 1 --> Repogram Coordinates */
 chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList):-
     Choice =:= 1,
     display_number_of_moves_allowed(X1, Y1, Board),
@@ -122,11 +155,19 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
     change_cell(X2, Y2, AuxBoard, AuxBoard2, C1),
     change_cell(X3, Y3, AuxBoard2, NewBoard, C2).
 
-/* Choice == 2 --> Rocket Boost */
+/*
+* Caso a choice seja 2, o utilizador decidiu então fazer um rocket boost. É disponibilizado o 
+* número de movimentos possíveis ao jogador, de seguida obtém-se o destino
+* escolhido pelo mesmo. Depois de obtida o valor na célula escolhida como destino,
+* é verificado a validade do movimento. Caso seja válido, o predicado continua. Caso não esteja
+* uma nave no destino, a nave é então colocada na respetiva casa e é actualizado o tabuleiro. Mas,
+* caso esteja uma nave na célula destino, o rocket boost, ao contrário do reprogram coordinates,
+* permite continuar a fazer chain moves. É então assim chamado novamente o move2, onde é dada 
+* continuação à jogada do jogador.
+*/
 chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList):-
     Choice =:= 2,
     display_number_of_moves_allowed(X2, Y2, Board),
-    valid_chain_moves(X1, Y1, X2, Y2, P, Board, DestList, 2),
     get_destination_coords(1, X2, Y2, X3, Y3, Board, P, C2, BackTrackingList, BackTrackingList_new),
     get_cell(X3, Y3, Board, C3),
     valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, Board, Choice),
@@ -140,15 +181,26 @@ chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList)
    chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice, BackTrackingList).
 
 /*
-* Verifies if the destination cell chosen can be reached with the current ship.
-* @param X1, Y1, X2, Y2, C
+* Verifica, visto que não é permitido movimentos na diagonal neste jogo, a se Manhattan Distance
+* entre dois pontos com é igual ao valor passado como argumento em C. Isto com o intuito de saber
+* se uma nave tem o nível necessário para chegar a uma certa célula.
+* @Params:
+*   - X1: Abcissa da casa inicial da nave
+    - Y1: Ordenada da casa inicial da nave
+    - X2: Abcissa da casa destino da nave
+    - Y2: Ordenada da casa destino da nave
+    - C: nível da nave em questão
 */
 dest_cell_in_reach(X1, Y1, X2, Y2, C):-
     C =:= abs(X2-X1) + abs(Y2-Y1).
 
 /*
-* Funtions that verify if the Base rows are ocupied with a ship.
-* If so, the opposite player wins.
+* Predicado intermédio que verifica o jogador dado como argumento e chama o respetivo predicado com o intuito de
+* calcular se o valor em X é a homerow do jogador P
+* @Params:
+    - X: linha homerow do jogador P
+    - B: board/tabuleiro
+    - P: jogador
 */
 home_row_check(X, B, P):-
     P =:= 1,
@@ -158,6 +210,17 @@ home_row_check(X, B, P):-
     P =:= 2,
     home_row_check_B(X, B, P, 6).
 
+/*
+* Verifica se X é a abcissa da homerow do jogador A. Usando I como counter, começa-se no topo do tabuleiro e
+* verifica-se se a linha tem alguma casa diferente de zero, ou seja, com uma nave. Caso não tenha, é incrementado o valor
+* da linha e verifica-se há alguma nave na seguinte. Isto até chegar à linha X em que, caso não tenha havido naves nenhumas
+* nas linhas anteriores e houver naves na linha X, confirma-se que esta é a homerow do jogador A.
+* @params:
+    - X: linha que vai ser testada se é a homerow do jogador P
+    - B: tabuleiro
+    - P: jogador
+    - I: counter das linhas
+*/
 home_row_check_A(X, B, P, I):-
     I<X,
     nth0(I, B, Row),
@@ -168,9 +231,12 @@ home_row_check_A(X, B, P, I):-
 home_row_check_A(X, B, P, I):-
     not(I<X),
     I1 is I-1,
-    nth0(I1, B, Row), % futuramente optimizar retirando este calculo repetido(?)
+    nth0(I1, B, Row),
     not(any_member([1,2,3], Row)).
 
+/*
+* Semelhante ao predicado home_row_check_A, mas aplica-se para o jogador B. Mesmo algoritmo, sendo a única diferença
+*/
 home_row_check_B(X, B, P, I):-
     I>X,
     nth0(I, B, Row),
