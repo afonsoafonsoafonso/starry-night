@@ -42,19 +42,12 @@ cpu_move(Board, NewBoard, P):-
 
 cpu_move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard):-
     cell_with_ship(C2),
-    random(1, 3, RandomInt), % CASO REPROGRAM DÊ ZERO POSSIVEIS JGOADAS FAZER ROCKET BOOST
+    random(1, 3, RandomInt),
     cpu_chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, RandomInt).
 
 cpu_move2(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard):-
     change_cell(X1, Y1, Board, AuxBoard, C2),
     change_cell(X2, Y2, AuxBoard, NewBoard, C1).
-
-cpu_chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
-    Choice =:= 1,
-    valid_chain_moves(X1, Y1, X2, Y2, P, Board, MoveList, Choice),
-    length(MoveList, MoveListLenght),
-    MoveListLenght =:= 0,
-    cpu_chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, 2).
 
 cpu_chain_move(X1, Y1, X2, Y2, C1, C2, P, Board, NewBoard, Choice):-
     Choice =:= 1,

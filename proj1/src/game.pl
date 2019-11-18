@@ -325,10 +325,6 @@ valid_chain_move(X1, Y1, X2, Y2, X3, Y3, C1, C2, C3, P, B, Choice):-
     not(is_base(X3, 1)),
     not(is_base(X3, 2)).
 
-/*
-* Com o mesmo intuito dos dois predicados anteriores, mas referente ao rocket boost.
-* Verifica se a célula destino é alcancável tendo em conta
-*/
 valid_chain_move(X1, Y1, X2, Y2, X3, Y3, P, B, Choice):-
     Choice =:= 2,
     get_cell(X2, Y2, B, C2),
