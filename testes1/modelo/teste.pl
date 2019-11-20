@@ -45,8 +45,20 @@ getByIndex([_H|T], Index, Value):-
 
 % Pergunta 3 -> patientJuri(+JuriMember)
 patientJuri(JuriMember):-
-    patientJuriAux(JuriMember, [], 0),
+    findall(Times, performance(ID, Times), Performances),
+    patientJuriAux1(JuriMember, Performances, 0),
     !.
+
+patientJuriAux1(JuriMember, [H|T], Counter):-
+    Index is JuriMember - 1,
+    getByIndex(H, Index, Time),
+    Time =:= 120,
+    Counter1 is Counter + 1,
+    patientJuriAux1(JuriMember, T, Counter1).
+patientJuriAux1(JuriMember, [H|T], Counter):-
+    patientJuriAux1(JuriMember, T, Counter).
+patientJuriAux1(_, _, 2).
+
 
 patientJuriAux(_, _, 2).
 
