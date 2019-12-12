@@ -18,7 +18,9 @@ startBoard([
 starrynight(B):-
     startBoard(B),
     create_board_domains(B),
-    check_lines(B).
+    check_lines(B),
+    transpose(B, TB),
+    check_lines(TB).
 
 create_board_domains([]).
 create_board_domains([H|T]):-
@@ -42,6 +44,12 @@ listSumAux([], Result, Result).
 listSumAux([H|T], Total, Result):-
     Total1 #= Total + H,
     listSumAux(T, Total1, Result).
+
+transpose([[]|_], []).
+transpose(M, [R|Rs]) :- transpose_col(M, R, RestM),
+                                 transpose(RestM, Rs).
+transpose_col([], [], []).
+transpose_col([[H|T]|Rs], [H|Hs], [T|Ts]) :- transpose_col(Rs, Hs, Ts).
 
 
 
