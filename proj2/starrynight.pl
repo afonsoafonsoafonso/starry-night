@@ -16,8 +16,8 @@ midBoard([
     [_, _, _, _, _]
     ]).
 
-midBoardRestrictionsRows([0, 0, 0, 3, 0]).
-midBoardRestrictionsCols([2, 0, 0, 3, 0]).
+midBoardRestrictionsRows([2, 0, 1, 3, 0]).
+midBoardRestrictionsCols([2, 1, 0, 3, 0]).
 
 bigBoard([
     [_, _, _, _, _, _],
