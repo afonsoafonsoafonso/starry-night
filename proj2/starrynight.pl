@@ -16,8 +16,8 @@ midBoard([
     [_, _, _, _, _]
     ]).
 
-midBoardRestrictionsRows([3, 0, 2, 0, 1]).
-midBoardRestrictionsCols([0, 0, 0, 0, 0]).
+midBoardRestrictionsRows([0, 0, 0, 3, 0]).
+midBoardRestrictionsCols([2, 0, 0, 3, 0]).
 
 bigBoard([
     [_, _, _, _, _, _],
@@ -28,6 +28,9 @@ bigBoard([
     [_, _, _, _, _, _]
     ]).
 
+bigBoardRestrictionsRows([1, 2, 1, 2, 2, 1]).
+bigBoardRestrictionsCols([2, 2, 1, 2, 1, 2]).
+
 /*
     0: vazio
     1: Sol
@@ -36,14 +39,16 @@ bigBoard([
 */
 
 starrynight(B):-
-    midBoard(B),
-    midBoardRestrictionsCols(RestrictCols),
-    midBoardRestrictionsRows(RestrictRows),
+    bigBoard(B),
+    bigBoardRestrictionsCols(RestrictCols),
+    bigBoardRestrictionsRows(RestrictRows),
     create_board_domains(B),
     check_lines(B, RestrictRows),
     transpose(B, TB),
     check_lines(TB, RestrictCols),
     append(B, FB),
+    append(TB, FTB),
+    labeling([], FTB),
     labeling([], FB).
 
 create_board_domains([]).
