@@ -46,10 +46,8 @@ starrynight(B):-
     check_lines(B, RestrictRows),
     transpose(B, TB),
     check_lines(TB, RestrictCols),
-    append(B, FB),
     append(TB, FTB),
-    labeling([], FTB),
-    labeling([], FB).
+    labeling([], FTB).
 
 create_board_domains([]).
 create_board_domains([H|T]):-
@@ -58,11 +56,8 @@ create_board_domains([H|T]):-
 
 check_lines([], []).
 check_lines([H|T], [RH|RT]):-
-    list_sum(H, S),
-    S#=6,
-    count(1, H, #=, 1),
-    count(2, H, #=, 1),
-    count(3, H, #=, 1),
+    sum(H, #=, 6),
+    global_cardinality(H, [1-1, 2-1, 3-1, 0-_]),
     enforce_side_restriction(H, RH),
     check_lines(T, RT).
 
@@ -94,14 +89,6 @@ enforce_side_restriction(L, 3):-
     DeltaMoon #= abs(StarPos - MoonPos),
 
     DeltaSun #= DeltaMoon.
-    
-list_sum([H|T], Value):-
-    listSumAux([H|T], 0, Value).
-
-listSumAux([], Result, Result).
-listSumAux([H|T], Total, Result):-
-    Total1 #= Total + H,
-    listSumAux(T, Total1, Result).
 
 
 
