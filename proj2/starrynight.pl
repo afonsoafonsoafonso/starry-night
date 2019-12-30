@@ -16,8 +16,8 @@ midBoard([
     [_, _, _, _, _]
     ]).
 
-midBoardRestrictionsRows([2, 0, 1, 3, 0]).
-midBoardRestrictionsCols([2, 1, 0, 3, 0]).
+midBoardRestrictionsRows([0, 0, 0, 3, 0]).
+midBoardRestrictionsCols([2, 0, 0, 3, 0]).
 
 bigBoard([
     [_, _, _, _, _, _],
@@ -39,15 +39,16 @@ bigBoardRestrictionsCols([2, 2, 1, 2, 1, 2]).
 */
 
 starrynight(B):-
-    bigBoard(B),
-    bigBoardRestrictionsCols(RestrictCols),
-    bigBoardRestrictionsRows(RestrictRows),
+    midBoard(B),
+    midBoardRestrictionsCols(RestrictCols),
+    midBoardRestrictionsRows(RestrictRows),
     create_board_domains(B),
     check_lines(B, RestrictRows),
     transpose(B, TB),
     check_lines(TB, RestrictCols),
     append(TB, FTB),
-    labeling([], FTB).
+    labeling([], FTB),
+    display_solution(B, RestrictRows, RestrictCols).
 
 create_board_domains([]).
 create_board_domains([H|T]):-
@@ -89,6 +90,50 @@ enforce_side_restriction(L, 3):-
     DeltaMoon #= abs(StarPos - MoonPos),
 
     DeltaSun #= DeltaMoon.
+
+% display functions
+
+display_solution([], [], RC):-
+    write('\n  '),
+    display_col_restrictions(RC).
+
+display_solution([R|Rs], [RH|RT], RC):-
+    nl,
+    display_cell(RH),
+    write(' | '),
+    display_row(R, 0),
+    display_solution(Rs, RT, RC).
+
+display_row([], N):-
+    write('\n  '),
+    display_separator(N).
+display_row([H|T], N):-
+    N1 is N + 1,
+    display_cell(H),
+    write(' | '),
+    display_row(T, N1).
+
+display_separator(0):-
+    write('+').
+display_separator(N):-
+    write('+---'),
+    N1 is N - 1,
+    display_separator(N1).
+
+display_col_restrictions([]).
+display_col_restrictions([H|T]):-
+    write('  '),
+    display_cell(H),
+    write(' '),
+    display_col_restrictions(T).
+
+
+display_cell(0):- write(' ').
+display_cell(1):- write('1').
+display_cell(2):- write('2').
+display_cell(3):- write('3').
+    
+
 
 
 
