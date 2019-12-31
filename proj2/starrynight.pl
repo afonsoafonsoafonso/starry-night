@@ -104,7 +104,7 @@ check_row_diagonals([H|T], Board, NRows, CurrRowN, 1):-
     %element(BelowRowN, Board, BelowRow),
     nth1(BelowRowN, Board, BelowRow),
     element(RightCol, BelowRow, RightDiagonal),
-    H #\= RightDiagonal,
+    H#=0 #\/ H #\= RightDiagonal,
     write('First Col of Row Finished'), nl,
     check_row_diagonals(T, Board, NRows, CurrRowN, RightCol).
 
@@ -116,7 +116,7 @@ check_row_diagonals([H|T], Board, NRows, CurrRowN, NRows):-
     nth1(BelowRowN, Board, BelowRow),
     element(LeftCol, BelowRow, LeftDiagonal),
     write('Last Col of Row Finished'), nl,
-    H #\= LeftDiagonal.
+    H#=0 #\/ H #\= LeftDiagonal.
     %check_row_diagonals(T, Board, NRows, CurrRowN, RightCol).
 
 check_row_diagonals([H|T], Board, NRows, CurrRowN, CurrColN):-
@@ -127,8 +127,8 @@ check_row_diagonals([H|T], Board, NRows, CurrRowN, CurrColN):-
     nth1(BelowRowN, Board, BelowRow),
     element(LeftCol, BelowRow, LeftDiagonal),
     element(RightCol, BelowRow, RightDiagonal),
-    H #\= RightDiagonal,
-    H #\= LeftDiagonal,
+    H#=0 #\/ H #\= RightDiagonal,
+    H#=0 #\/ H #\= LeftDiagonal,
     write('Col of Row Finished'), nl,
     check_row_diagonals(T, Board, NRows, CurrRowN, RightCol).
     
