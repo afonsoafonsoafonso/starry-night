@@ -34,6 +34,6 @@ display_col_restrictions([H|T]):-
 
 
 display_cell(0):- write(' ').
-display_cell(1):- write('1').
-display_cell(2):- write('2').
-display_cell(3):- write('3').
+display_cell(1):- put_code(9675).
+display_cell(2):- put_code(9679).
+display_cell(3):- put_code(128970).
