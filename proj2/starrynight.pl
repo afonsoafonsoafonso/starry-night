@@ -3,6 +3,7 @@
 :-consult('puzzles.pl').
 :-consult('display.pl').
 :-consult('menu.pl').
+:-consult('utils.pl').
 
 /*
     0: vazio
@@ -10,6 +11,9 @@
     2: Lua
     3: Estrela
 */
+
+start:-
+    menu.
 
 starrynight(B, Puzzle):-
     puzzle(Puzzle, B, N, RestrictRows, RestrictCols),

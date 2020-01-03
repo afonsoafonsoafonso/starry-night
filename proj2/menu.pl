@@ -20,4 +20,55 @@ display_menu:-
     write('|                              3. Exit              *                   |'),nl,
     write('|                   *                                                   |'),nl,
     write('|     *                             *           *                   *   |'),nl,
-    write('|_______________________________________________________________________|'),nl,nl,nl. 
+    write('|_______________________________________________________________________|'),nl,nl,nl.
+
+menu:-
+    display_menu,
+    write(' > Choose your option: '),
+    nl,
+    user_input(Option, 1, 3),
+    process_menu_input(Option).
+
+process_menu_input(1):-
+    show_puzzle_menu(1).
+
+process_menu_input(2).
+
+process_menu_input(3).
+
+show_puzzle_menu(PuzzleNo):-
+    nl, write('Puzzle #'), write(PuzzleNo), nl,
+    puzzle(PuzzleNo, B, N, RestrictRows, RestrictCols),
+    ( N =:= 5 -> emptyMidBoard(EmptyB); emptyBigBoard(EmptyB) ),
+    display_solution(EmptyB, RestrictRows, RestrictCols),
+    nl, write('1: Next Puzzle ; 2: Show Solution ; 3: Main Menu'), nl,
+    write(' > Choose your option: '), nl,
+    user_input(Option, 1, 3),
+    process_puzzle_menu_input(Option, PuzzleNo).
+
+show_solved_puzzle_menu(PuzzleNo):-
+    starrynight(B, PuzzleNo),
+    nl, write('1: Next Puzzle ; 2: Main Menu'), nl,
+    write(' > Choose your option: '), nl,
+    user_input(Option, 1, 2),
+    process_solved_menu_input(Option, PuzzleNo).
+
+process_puzzle_menu_input(1, PuzzleNo):-
+    PuzzleNo1 is PuzzleNo + 1,
+    show_puzzle_menu(PuzzleNo1).
+
+process_puzzle_menu_input(2, PuzzleNo):-
+    show_solved_puzzle_menu(PuzzleNo1).
+
+process_puzzle_menu_input(3, _):-
+        menu.
+
+process_solved_menu_input(1, PuzzleNo):-
+    PuzzleNo1 is PuzzleNo + 1,
+    show_puzzle_menu(PuzzleNo1).
+
+process_solved_menu_input(2, PuzzleNo):-
+    menu.
+
+
+
