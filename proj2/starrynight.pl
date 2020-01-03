@@ -2,6 +2,7 @@
 :-use_module(library(lists)).
 :-consult('puzzles.pl').
 :-consult('display.pl').
+:-consult('menu.pl').
 
 /*
     0: vazio
