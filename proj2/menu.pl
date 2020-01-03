@@ -74,7 +74,7 @@ process_solved_menu_input(2, PuzzleNo):-
 
 make_your_own_menu:-
     write(' > Board size: '), nl,
-    user_input(Size, 1, 10),
+    user_input(Size, 1, 10  ),
     nl, nl,
     write(' > Input row restrictions: '), nl,
     get_n_inputs(0, 3, Size, RowRestrictions),
