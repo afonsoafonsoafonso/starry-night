@@ -50,7 +50,7 @@ puzzle(5, Board, Size, RowRestrictions, ColRestrictions):-
 puzzle(6, Board, Size, RowRestrictions, ColRestrictions):-
     bigBoard(Board, Size),
     append([], [0, 0, 3, 0, 3, 3], RowRestrictions),
-    append([], [0, 0, 0, 0, 3, 0], ColRestrictions).
+    append([], [1, 0, 0, 0, 3, 0], ColRestrictions).
 
 puzzle(7, Board, Size, RowRestrictions, ColRestrictions):-
     bigBoard(Board, Size),
@@ -64,7 +64,7 @@ puzzle(8, Board, Size, RowRestrictions, ColRestrictions):-
 
 puzzle(9, Board, Size, RowRestrictions, ColRestrictions):-
     bigBoard(Board, Size),
-    append([], [1, 1, 2, 0, 0, 0], RowRestrictions),
+    append([], [1, 1, 2, 0, 0, 3], RowRestrictions),
     append([], [0, 0, 1, 0, 1, 3], ColRestrictions).
 
 puzzle(10, Board, Size, RowRestrictions, ColRestrictions):-
@@ -84,7 +84,7 @@ puzzle(12, Board, Size, RowRestrictions, ColRestrictions):-
 
 puzzle(13, Board, Size, RowRestrictions, ColRestrictions):-
     bigBoard(Board, Size),
-    append([], [3, 2, 3, 2, 3, 0], RowRestrictions),
+    append([], [2, 1, 2, 1, 2, 0], RowRestrictions),
     append([], [0, 2, 0, 3, 1, 1], ColRestrictions).
 
 puzzle(14, Board, Size, RowRestrictions, ColRestrictions):-
