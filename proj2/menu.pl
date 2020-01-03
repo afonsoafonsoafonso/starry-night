@@ -76,7 +76,14 @@ make_your_own_menu:-
     write(' > Board size: '), nl,
     user_input(Size, 1, 10),
     nl, nl,
-    write(' > Input row restrictions: '), nl.
+    write(' > Input row restrictions: '), nl,
+    get_n_inputs(0, 3, Size, RowRestrictions),
+    write(' > Input col restrictions: '), nl,
+    get_n_inputs(0, 3, Size, ColRestrictions),
+    nl, nl, write('Your puzzle:'), nl,
+    bigBoard(B,_),
+    starrynight(B, Size, RowRestrictions, ColRestrictions).
+
 
 
 

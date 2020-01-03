@@ -26,6 +26,16 @@ starrynight(B, Puzzle):-
     labeling([], FTB),
     display_solution(B, RestrictRows, RestrictCols).
 
+starrynight(B, N, RestrictRows, RestrictCols):-
+    create_board_domains(B),
+    check_lines(B, RestrictRows),
+    enforce_diagonal_restrictions(B, B, N, 1),
+    transpose(B, TB),
+    check_lines(TB, RestrictCols),
+    append(TB, FTB),
+    labeling([], FTB),
+    display_solution(B, RestrictRows, RestrictCols).
+
 create_board_domains([]).
 create_board_domains([H|T]):-
     domain(H, 0, 3),
