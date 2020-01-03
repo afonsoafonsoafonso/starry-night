@@ -101,3 +101,25 @@ puzzle(16, Board, Size, RowRestrictions, ColRestrictions):-
     bigBoard(Board, Size),
     append([], [1, 2, 1, 2, 2, 1], RowRestrictions),
     append([], [2, 2, 1, 2, 1, 2], ColRestrictions).
+
+makeBoard(N, B):-
+    makeBoardAux([], B, N, N).
+
+makeBoardAux(B, B, N, 0).
+makeBoardAux(B, FB, N, C):-
+    C1 is C - 1,
+    buildList(N, Row),
+    makeBoardAux([Row|B], FB, N, C1).
+ 
+buildBoard(N, B) :-
+    length(B, N),
+    map_list(length_list(N), B).
+ 
+map_list(_, []).
+map_list(C, [X|Xs]) :-
+    call(C,X),
+    map_list(C, Xs).
+
+length_list(N, L) :-
+    length(L, N).
+    

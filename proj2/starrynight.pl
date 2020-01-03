@@ -23,7 +23,9 @@ starrynight(B, Puzzle):-
     transpose(B, TB),
     check_lines(TB, RestrictCols),
     append(TB, FTB),
+    write('BFORE LABELING\n\n'),
     labeling([], FTB),
+    write('AFTER LABELING\n\n'),
     display_solution(B, RestrictRows, RestrictCols).
 
 starrynight(B, N, RestrictRows, RestrictCols):-
@@ -33,7 +35,9 @@ starrynight(B, N, RestrictRows, RestrictCols):-
     transpose(B, TB),
     check_lines(TB, RestrictCols),
     append(TB, FTB),
+    write('BFORE LABELING\n\n'),
     labeling([], FTB),
+    write('AFTER LABELING\n\n'),
     display_solution(B, RestrictRows, RestrictCols).
 
 create_board_domains([]).
