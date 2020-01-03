@@ -32,7 +32,8 @@ menu:-
 process_menu_input(1):-
     show_puzzle_menu(1).
 
-process_menu_input(2).
+process_menu_input(2):-
+    make_your_own_menu.
 
 process_menu_input(3).
 
@@ -70,6 +71,15 @@ process_solved_menu_input(1, PuzzleNo):-
 
 process_solved_menu_input(2, PuzzleNo):-
     menu.
+
+make_your_own_menu:-
+    write(' > Board size: '), nl,
+    user_input(Size, 1, 10),
+    nl, nl,
+    write(' > Input row restrictions: '), nl.
+
+
+
 
 
 
