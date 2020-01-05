@@ -26,7 +26,8 @@ starrynight(B, Puzzle):-
     %write('BEFORE LABELING\n\n'),
     labeling([], FTB),
     %write('AFTER LABELING\n\n'),
-    display_solution(B, RestrictRows, RestrictCols).
+    write('  '), display_separator(N),
+    display_solution(N, B, RestrictRows, RestrictCols).
     /*
     fd_statistics,
     statistics.
@@ -42,7 +43,8 @@ starrynight(B, N, RestrictRows, RestrictCols):-
     %write('BEFORE LABELING\n\n'),
     labeling([], FTB),
     %write('AFTER LABELING\n\n'),
-    display_solution(B, RestrictRows, RestrictCols).
+    write('  '), display_separator(N),
+    display_solution(N, B, RestrictRows, RestrictCols).
     /*
     fd_statistics,
     statistics.

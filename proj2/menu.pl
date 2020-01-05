@@ -39,10 +39,10 @@ process_menu_input(3).
 
 show_puzzle_menu(PuzzleNo):-
     nl,nl,nl,write('~~~~~~~~~~~~~~~~~'),nl,nl,nl,
-    write('Puzzle #'), write(PuzzleNo), nl,
+    write('Puzzle #'), write(PuzzleNo), nl, nl,
     puzzle(PuzzleNo, B, N, RestrictRows, RestrictCols),
     ( N =:= 5 -> emptyMidBoard(EmptyB); emptyBigBoard(EmptyB) ),
-    display_solution(EmptyB, RestrictRows, RestrictCols),
+    write('  '), display_separator(N), display_solution(EmptyB, RestrictRows, RestrictCols),
     nl, nl, write('1: Next Puzzle ; 2: Show Solution ; 3: Main Menu'), nl, nl,
     write(' > Choose your option: '), nl,
     user_input(Option, 1, 3),
