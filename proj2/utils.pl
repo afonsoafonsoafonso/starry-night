@@ -13,7 +13,8 @@ user_input(Input, Min, Max):-
     user_input(Input, Min, Max).
 
 get_n_inputs(Min, Max, N, R):-
-    get_n_inputs_aux(Min, Max, N, [], R).
+    get_n_inputs_aux(Min, Max, N, [], RR),
+    reverse(RR, R).
 
 get_n_inputs_aux(_, _, 0, RF, RF).
 get_n_inputs_aux(Min, Max, N, R, RF):-

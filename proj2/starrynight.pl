@@ -50,6 +50,17 @@ starrynight(B, N, RestrictRows, RestrictCols):-
     statistics.
     */
 
+%feito aqui pois o starrynight apenas falhará no 'Make Your Own'
+starrynight(_, _, _, _):-
+    nl,write('No solution was found for your puzzle. Sorry!'),nl,
+    nl, write('1: Make Another ; 2: Main Menu'), nl,
+    write(' > Choose your option: '), nl,
+    user_input(1, 1, 3),
+    make_your_own_menu.
+
+starrynight(_, _, _, _):-
+    menu.
+
 create_board_domains([]).
 create_board_domains([H|T]):-
     domain(H, 0, 3),
