@@ -23,10 +23,14 @@ starrynight(B, Puzzle):-
     transpose(B, TB),
     check_lines(TB, RestrictCols),
     append(TB, FTB),
-    write('BFORE LABELING\n\n'),
+    %write('BEFORE LABELING\n\n'),
     labeling([], FTB),
-    write('AFTER LABELING\n\n'),
+    %write('AFTER LABELING\n\n'),
     display_solution(B, RestrictRows, RestrictCols).
+    /*
+    fd_statistics,
+    statistics.
+    */
 
 starrynight(B, N, RestrictRows, RestrictCols):-
     create_board_domains(B),
@@ -35,10 +39,14 @@ starrynight(B, N, RestrictRows, RestrictCols):-
     transpose(B, TB),
     check_lines(TB, RestrictCols),
     append(TB, FTB),
-    write('BFORE LABELING\n\n'),
+    %write('BEFORE LABELING\n\n'),
     labeling([], FTB),
-    write('AFTER LABELING\n\n'),
+    %write('AFTER LABELING\n\n'),
     display_solution(B, RestrictRows, RestrictCols).
+    /*
+    fd_statistics,
+    statistics.
+    */
 
 create_board_domains([]).
 create_board_domains([H|T]):-
@@ -93,7 +101,7 @@ check_row_diagonals([H|T], Board, NRows, CurrRowN, 1):-
     nth1(BelowRowN, Board, BelowRow),
     element(RightCol, BelowRow, RightDiagonal),
     H#=0 #\/ H #\= RightDiagonal,
-    write('First Col of Row Finished'), nl,
+    %write('First Col of Row Finished'), nl,
     check_row_diagonals(T, Board, NRows, CurrRowN, RightCol).
 
 check_row_diagonals([H|_], Board, NRows, CurrRowN, NRows):-
@@ -102,7 +110,7 @@ check_row_diagonals([H|_], Board, NRows, CurrRowN, NRows):-
     LeftCol is CurrColN - 1,
     nth1(BelowRowN, Board, BelowRow),
     element(LeftCol, BelowRow, LeftDiagonal),
-    write('Last Col of Row Finished'), nl,
+    %write('Last Col of Row Finished'), nl,
     H#=0 #\/ H #\= LeftDiagonal.
 
 check_row_diagonals([H|T], Board, NRows, CurrRowN, CurrColN):-
@@ -114,7 +122,7 @@ check_row_diagonals([H|T], Board, NRows, CurrRowN, CurrColN):-
     element(RightCol, BelowRow, RightDiagonal),
     H#=0 #\/ H #\= RightDiagonal,
     H#=0 #\/ H #\= LeftDiagonal,
-    write('Col of Row Finished'), nl,
+    %write('Col of Row Finished'), nl,
     check_row_diagonals(T, Board, NRows, CurrRowN, RightCol).
     
 

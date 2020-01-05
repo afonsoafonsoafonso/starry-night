@@ -60,7 +60,7 @@ process_puzzle_menu_input(1, PuzzleNo):-
     show_puzzle_menu(PuzzleNo1).
 
 process_puzzle_menu_input(2, PuzzleNo):-
-    show_solved_puzzle_menu(PuzzleNo1).
+    show_solved_puzzle_menu(PuzzleNo).
 
 process_puzzle_menu_input(3, _):-
         menu.
