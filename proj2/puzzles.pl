@@ -105,7 +105,7 @@ puzzle(16, Board, Size, RowRestrictions, ColRestrictions):-
 makeBoard(N, B):-
     makeBoardAux([], B, N, N).
 
-makeBoardAux(B, B, N, 0).
+makeBoardAux(B, B, _N, 0).
 makeBoardAux(B, FB, N, C):-
     C1 is C - 1,
     buildList(N, Row),

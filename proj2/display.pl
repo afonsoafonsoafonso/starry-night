@@ -1,8 +1,8 @@
-display_solution(N, [], [], RC):-
+display_solution(_N, [], [], RC):-
     write('\n  '),
     display_col_restrictions(RC).
 
-display_solution(N, [R|Rs], [RH|RT], RC):-
+display_solution(_N, [R|Rs], [RH|RT], RC):-
     nl,
     display_cell(RH),
     write(' | '),

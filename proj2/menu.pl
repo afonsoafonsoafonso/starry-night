@@ -40,7 +40,7 @@ process_menu_input(3).
 show_puzzle_menu(1):-
     nl,nl,nl,write('~~~~~~~~~~~~~~~~~'),nl,nl,nl,
     write('Puzzle #'), write(1), nl, nl,
-    puzzle(1, B, N, RestrictRows, RestrictCols),
+    puzzle(1, _B, N, RestrictRows, RestrictCols),
     ( N =:= 5 -> emptyMidBoard(EmptyB); emptyBigBoard(EmptyB) ),
     write('  '), display_separator(N), display_solution(EmptyB, RestrictRows, RestrictCols),
     nl, nl, write('1: Next Puzzle ; 2: Show Solution ; 3: Main Menu'), nl, nl,
@@ -51,7 +51,7 @@ show_puzzle_menu(1):-
 show_puzzle_menu(16):-
     nl,nl,nl,write('~~~~~~~~~~~~~~~~~'),nl,nl,nl,
     write('Puzzle #'), write(16), nl, nl,
-    puzzle(16, B, N, RestrictRows, RestrictCols),
+    puzzle(16, _B, N, RestrictRows, RestrictCols),
     ( N =:= 5 -> emptyMidBoard(EmptyB); emptyBigBoard(EmptyB) ),
     write('  '), display_separator(N), display_solution(EmptyB, RestrictRows, RestrictCols),
     nl, nl, write('1: Previous Puzzle ; 2: Show Solution ; 3: Main Menu'), nl, nl,
@@ -62,7 +62,7 @@ show_puzzle_menu(16):-
 show_puzzle_menu(PuzzleNo):-
     nl,nl,nl,write('~~~~~~~~~~~~~~~~~'),nl,nl,nl,
     write('Puzzle #'), write(PuzzleNo), nl, nl,
-    puzzle(PuzzleNo, B, N, RestrictRows, RestrictCols),
+    puzzle(PuzzleNo, _B, N, RestrictRows, RestrictCols),
     ( N =:= 5 -> emptyMidBoard(EmptyB); emptyBigBoard(EmptyB) ),
     write('  '), display_separator(N), display_solution(EmptyB, RestrictRows, RestrictCols),
     nl, nl, write('1: Next Puzzle ; 2: Previous Puzzle ; 3: Show Solution ; 4: Main Menu'), nl, nl,
@@ -72,7 +72,7 @@ show_puzzle_menu(PuzzleNo):-
 
 show_solved_puzzle_menu(PuzzleNo):-
     nl, nl, nl, write('Puzzle #'), write(PuzzleNo), write(' - Solution'), nl, nl,
-    starrynight(B, PuzzleNo),
+    starrynight(_B, PuzzleNo),
     nl, nl, write('1: Next Puzzle ; 2: Main Menu'), nl, nl,
     write(' > Choose your option: '), nl,
     user_input(Option, 1, 2),
@@ -80,7 +80,7 @@ show_solved_puzzle_menu(PuzzleNo):-
 
 show_solved_puzzle_menu(16):-
     nl, nl, nl, write('Puzzle #'), write(16), write(' - Solution'), nl, nl,
-    starrynight(B, 16),
+    starrynight(_B, 16),
     nl, nl, write('1: Previous Puzzle ; 2: Main Menu'), nl, nl,
     write(' > Choose your option: '), nl,
     user_input(Option, 1, 2),
@@ -125,20 +125,21 @@ process_solved_menu_input(1, PuzzleNo):-
     PuzzleNo1 is PuzzleNo + 1,
     show_puzzle_menu(PuzzleNo1).
 
-process_solved_menu_input(2, PuzzleNo):-
+process_solved_menu_input(2, _PuzzleNo):-
     menu.
 
 make_your_own_menu:-
-    write(' > Board size: '), nl,
-    user_input(Size, 1, 10),
-    nl, nl,
+    nl,nl,nl,write('~~~~~~~~~~~~~~~~~'),nl,nl,nl,
+    write('Make your own puzzle!'),
+    nl, nl,write(' > Board size (min: 5, max: 20): '), nl,
+    user_input(Size, 5, 20),
+    nl,
     write(' > Input row restrictions: '), nl,
     get_n_inputs(0, 3, Size, RowRestrictions),
-    write(' > Input col restrictions: '), nl,
+    nl, nl, write(' > Input col restrictions: '), nl,
     get_n_inputs(0, 3, Size, ColRestrictions),
-    nl, nl, write('Your puzzle:'), nl,
+    nl, nl, write('Your puzzle:'), nl, nl,
     buildBoard(Size, B),
-    !,
     starrynight(B, Size, RowRestrictions, ColRestrictions).
 
 
